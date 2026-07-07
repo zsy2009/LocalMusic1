@@ -103,8 +103,16 @@ def init_db_schema():
             END
         """)
 
+        # Last played song for cross-device resume
+        cursor.execute("""
+            IF COL_LENGTH('Users', 'LastSongID') IS NULL
+            BEGIN
+                ALTER TABLE Users ADD LastSongID INT NULL;
+            END
+        """)
+
         conn.commit()
-        print("Database schema migration checked — Country/Province/City columns ready.")
+        print("Database schema migration checked — Country/Province/City/LastSongID columns ready.")
     except Exception as e:
         print(f"init_db_schema failed: {e}")
     finally:
@@ -181,6 +189,10 @@ class PlaylistSongAdd(BaseModel):
     song_id: int
 
 
+class LastPlayedUpdate(BaseModel):
+    song_id: int
+
+
 class LocationUpdate(BaseModel):
     country: str
     province: str
@@ -213,7 +225,7 @@ def get_current_user_full(
     conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute(
-        "SELECT UserID, Username, Nickname, AvatarUrl, Role, Country, Province, City, District FROM Users WHERE Username = ?",
+        "SELECT UserID, Username, Nickname, AvatarUrl, Role, Country, Province, City, District, LastSongID FROM Users WHERE Username = ?",
         (user["sub"],),
     )
     row = cursor.fetchone()
@@ -233,6 +245,7 @@ def get_current_user_full(
         "Province": row.Province or "北京",
         "City": row.City or "北京",
         "District": row.District or "",
+        "LastSongID": row.LastSongID,
     }
 
 
@@ -317,6 +330,48 @@ def refresh(body: RefreshRequest):
 def get_my_profile(user: dict = Depends(get_current_user_full)):
     """Return the current user's profile."""
     return user
+
+
+@app.get("/api/users/me/last-played")
+def get_last_played_song(user: dict = Depends(get_current_user_full)):
+    """Return the current user's last selected song."""
+    song_id = user.get("LastSongID")
+    if not song_id:
+        return {"song_id": None}
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT SongID FROM Songs WHERE SongID = ?", (song_id,))
+    row = cursor.fetchone()
+    cursor.close()
+    conn.close()
+
+    if row is None:
+        return {"song_id": None}
+    return {"song_id": int(row.SongID)}
+
+
+@app.put("/api/users/me/last-played")
+def update_last_played_song(body: LastPlayedUpdate, user: dict = Depends(get_current_user_full)):
+    """Persist the current user's last selected song for cross-device resume."""
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT SongID FROM Songs WHERE SongID = ?", (body.song_id,))
+    row = cursor.fetchone()
+    if row is None:
+        cursor.close()
+        conn.close()
+        raise HTTPException(status_code=404, detail="Song not found")
+
+    cursor.execute(
+        "UPDATE Users SET LastSongID = ? WHERE UserID = ?",
+        (body.song_id, user["UserID"]),
+    )
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return {"detail": "Last played song updated", "song_id": body.song_id}
 
 
 # ────────────────────────────────────────────────────────────────────

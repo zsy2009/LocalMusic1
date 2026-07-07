@@ -31,6 +31,7 @@ class User(Base):
     Province     = Column(Unicode(100), nullable=True)
     City         = Column(Unicode(100), nullable=True)
     District     = Column(Unicode(100), nullable=True)
+    LastSongID   = Column(Integer, nullable=True)
 
 
 # ═══════════════════════════════════════════════════════════════════

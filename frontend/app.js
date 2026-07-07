@@ -34,7 +34,7 @@ audioPlayer.crossOrigin = "anonymous";
 let isVisualizerInit = false;
 let audioCtx, analyser, audioSource;
 const visCanvas   = document.getElementById("visualizer-canvas");
-const visCanvasCtx = visCanvas.getContext("2d");
+let visCanvasCtx = null;
 
 const searchInput = document.getElementById("search-input");
 const centerNav   = document.getElementById("center-nav");
@@ -127,11 +127,163 @@ let playStatsTimer = null;
 let currentViewContext = { type: 'folder', value: 'root' };
 let currentPlayingContext = null;
 let currentPlayingSong = null;
+const LAST_PLAYED_KEY = "musiccloud_last_played";
 
 /* ── Auth helpers ──────────────────────────────────────────────── */
 function getToken() { return localStorage.getItem("musiccloud_token"); }
 function setToken(token) { localStorage.setItem("musiccloud_token", token); }
 function authHeaders() { return { "Authorization": `Bearer ${getToken()}`, "Content-Type": "application/json" }; }
+
+function serializePlaybackContext(context = currentViewContext) {
+    if (!context) return { type: "folder", value: "root" };
+    if (context.type === "playlist" && context.value) {
+        return {
+            type: "playlist",
+            playlistId: context.value.PlaylistID,
+            name: context.value.Name,
+        };
+    }
+    return { type: context.type || "folder", value: context.value || "root" };
+}
+
+function saveLastPlayedSong(song) {
+    if (!song || !song.SongID) return;
+
+    const payload = {
+        songId: song.SongID,
+        context: serializePlaybackContext(currentViewContext),
+        savedAt: Date.now(),
+    };
+
+    try {
+        localStorage.setItem(LAST_PLAYED_KEY, JSON.stringify(payload));
+    } catch (e) {
+        console.warn("Failed to save last played song locally", e);
+    }
+
+    fetch(`${API_BASE}/api/users/me/last-played`, {
+        method: "PUT",
+        headers: authHeaders(),
+        body: JSON.stringify({ song_id: song.SongID }),
+    }).catch((e) => {
+        console.warn("Failed to sync last played song", e);
+    });
+}
+
+function getLastPlayedSongInfo() {
+    try {
+        const raw = localStorage.getItem(LAST_PLAYED_KEY);
+        return raw ? JSON.parse(raw) : null;
+    } catch (e) {
+        return null;
+    }
+}
+
+async function fetchLastPlayedSongInfo() {
+    try {
+        const resp = await fetch(`${API_BASE}/api/users/me/last-played`, {
+            headers: authHeaders(),
+        });
+        if (resp.ok) {
+            const data = await resp.json();
+            if (data.song_id) return { songId: data.song_id, source: "server" };
+        }
+    } catch (e) {
+        console.warn("Failed to fetch server last played song", e);
+    }
+    return getLastPlayedSongInfo();
+}
+
+function getSongListScroller() {
+    const centerPanel = document.getElementById("center-panel");
+    const centerListStyle = window.getComputedStyle(centerList);
+    const centerPanelStyle = centerPanel ? window.getComputedStyle(centerPanel) : null;
+
+    if (centerListStyle.overflowY !== "visible" && centerList.scrollHeight > centerList.clientHeight) {
+        return centerList;
+    }
+
+    if (centerPanel && centerPanelStyle && centerPanelStyle.overflowY !== "visible" && centerPanel.scrollHeight > centerPanel.clientHeight) {
+        return centerPanel;
+    }
+
+    return centerList;
+}
+
+function scrollSongRowIntoComfortView(row, { smooth = true } = {}) {
+    if (!row) return;
+
+    const scroller = getSongListScroller();
+    if (!scroller) return;
+
+    const maxScroll = Math.max(0, scroller.scrollHeight - scroller.clientHeight);
+    if (maxScroll <= 0) return;
+
+    const scrollerRect = scroller.getBoundingClientRect();
+    const rowRect = row.getBoundingClientRect();
+    const rowCenter = rowRect.top - scrollerRect.top + rowRect.height / 2;
+    const targetTop = Math.min(
+        maxScroll,
+        Math.max(0, scroller.scrollTop + rowCenter - scroller.clientHeight / 2)
+    );
+
+    scroller.scrollTo({
+        top: targetTop,
+        behavior: smooth ? "smooth" : "auto",
+    });
+}
+
+function updatePlayingRowHighlight(songId, { scroll = false, smooth = true } = {}) {
+    document.querySelectorAll(".song-item.playing").forEach(el => el.classList.remove("playing"));
+    if (!songId) return null;
+
+    const activeRow = centerList.querySelector(`.song-item[data-songid="${songId}"]`);
+    if (activeRow) {
+        activeRow.classList.add("playing");
+        if (scroll) {
+            requestAnimationFrame(() => scrollSongRowIntoComfortView(activeRow, { smooth }));
+        }
+    }
+    return activeRow;
+}
+
+function renderSongHome(song) {
+    if (!song) return;
+    renderDirectory(song.Folder || "root");
+}
+
+function flashSongRow(row) {
+    if (!row) return;
+    const originalBg = row.style.backgroundColor;
+    row.style.transition = "background-color 0.3s";
+    row.style.backgroundColor = "rgba(30, 215, 96, 0.4)";
+
+    setTimeout(() => {
+        row.style.backgroundColor = originalBg;
+        row.style.transition = "";
+    }, 800);
+}
+
+async function restoreLastPlayedSong() {
+    const saved = await fetchLastPlayedSongInfo();
+    if (!saved || !saved.songId) return;
+
+    const song = songMap[Number(saved.songId)];
+    if (!song) return;
+
+    renderSongHome(song);
+
+    currentPlayingPlaylist = [...currentViewPlaylist];
+    currentPlayingIndex = currentPlayingPlaylist.findIndex(item => item.SongID === song.SongID);
+    if (currentPlayingIndex < 0) currentPlayingIndex = 0;
+
+    await playSong(song, { autoplay: false, save: false, smoothScroll: false });
+    requestAnimationFrame(() => {
+        const row = updatePlayingRowHighlight(song.SongID, { scroll: true, smooth: false });
+        if (row) flashSongRow(row);
+    });
+}
+
 
 /* ── Toast ─────────────────────────────────────────────────────── */
 function showToast(msg, isError = false) {
@@ -488,6 +640,7 @@ async function initPlayer() {
     resetPlayerUI();
     await loadUserProfile();
     await loadLibrary();
+    await restoreLastPlayedSong();
 
     // 强制修正视口高度，消除 iOS Safari 地址栏导致的溢出抖动
     function enforceVisualViewport() {
@@ -839,11 +992,53 @@ function filterAndRenderList(type, keyword) {
 let visDataArray, visMinIndex, visMaxIndex;
 let visualizerPeak = 72;
 let visualizerCanvasWidth = 0;
+let visualizerWorker = null;
+let visualizerUsesWorker = false;
+let visualizerFramePending = false;
+let visualizerWasMobile = false;
+let visualizerLastFrameAt = 0;
 const VIS_BAR_COUNT = 64;
 const VIS_HEIGHT = 120;
 const VIS_MAX_FILL = 0.82;
 const VIS_MIN_HEIGHT = 2;
+const VIS_FRAME_INTERVAL = 1000 / 45;
 const smoothedHeights = new Array(VIS_BAR_COUNT).fill(0);
+
+function initVisualizerRenderer() {
+    if (!visCanvas) return;
+
+    if (window.Worker && visCanvas.transferControlToOffscreen) {
+        try {
+            visualizerWorker = new Worker("visualizer-worker.js");
+            visualizerWorker.onmessage = (event) => {
+                if (event.data && event.data.type === "frame-done") {
+                    visualizerFramePending = false;
+                }
+            };
+            visualizerWorker.onerror = () => {
+                visualizerFramePending = false;
+            };
+
+            const offscreen = visCanvas.transferControlToOffscreen();
+            visualizerWorker.postMessage({
+                type: "init",
+                canvas: offscreen,
+                barCount: VIS_BAR_COUNT,
+                height: VIS_HEIGHT,
+                maxFill: VIS_MAX_FILL,
+                minHeight: VIS_MIN_HEIGHT
+            }, [offscreen]);
+            visualizerUsesWorker = true;
+            return;
+        } catch (err) {
+            console.warn("Visualizer worker unavailable, using main-thread fallback", err);
+            visualizerWorker = null;
+            visualizerUsesWorker = false;
+        }
+    }
+
+    visCanvasCtx = visCanvas.getContext("2d");
+}
 
 function initVisualizer() {
     if (isVisualizerInit) return;  // ensure media element is only wired once
@@ -863,6 +1058,7 @@ function initVisualizer() {
     audioSource = audioCtx.createMediaElementSource(audioPlayer);
     audioSource.connect(analyser);
     analyser.connect(audioCtx.destination);
+    initVisualizerRenderer();
     isVisualizerInit = true;
     drawVisualizer();
 }
@@ -870,11 +1066,44 @@ function initVisualizer() {
 function drawVisualizer() {
     requestAnimationFrame(drawVisualizer);
 
-    // Mobile: kill visualizer entirely ? free CPU completely
-    if (window.innerWidth <= 768) {
-        visCanvasCtx.clearRect(0, 0, visCanvas.width, visCanvas.height);
+    const isMobile = window.innerWidth <= 768;
+    if (isMobile) {
+        if (!visualizerWasMobile) {
+            if (visualizerUsesWorker && visualizerWorker) {
+                visualizerWorker.postMessage({ type: "clear" });
+            } else if (visCanvasCtx) {
+                visCanvasCtx.clearRect(0, 0, visCanvas.width, visCanvas.height);
+            }
+            visualizerWasMobile = true;
+        }
         return;
     }
+    visualizerWasMobile = false;
+
+    analyser.getByteFrequencyData(visDataArray);
+
+    if (visualizerUsesWorker && visualizerWorker) {
+        const now = performance.now();
+        if (visualizerFramePending || now - visualizerLastFrameAt < VIS_FRAME_INTERVAL) return;
+
+        visualizerFramePending = true;
+        visualizerLastFrameAt = now;
+        const frameBuffer = visDataArray.slice().buffer;
+        visualizerWorker.postMessage({
+            type: "frame",
+            data: frameBuffer,
+            width: window.innerWidth,
+            minIndex: visMinIndex,
+            maxIndex: visMaxIndex
+        }, [frameBuffer]);
+        return;
+    }
+
+    drawVisualizerOnMainThread();
+}
+
+function drawVisualizerOnMainThread() {
+    if (!visCanvasCtx) return;
 
     if (visualizerCanvasWidth !== window.innerWidth || visCanvas.height !== VIS_HEIGHT) {
         visualizerCanvasWidth = window.innerWidth;
@@ -882,7 +1111,6 @@ function drawVisualizer() {
         visCanvas.height = VIS_HEIGHT;
     }
 
-    analyser.getByteFrequencyData(visDataArray);
     visCanvasCtx.clearRect(0, 0, visCanvas.width, visCanvas.height);
 
     const barWidth = visCanvas.width / VIS_BAR_COUNT;
@@ -901,43 +1129,40 @@ function drawVisualizer() {
             count++;
         }
 
-        // ???????????????????????
         const trebleLift = 1 + (i / (VIS_BAR_COUNT - 1)) * 0.55;
         const value = (count ? sum / count : 0) * trebleLift;
         rawBands[i] = value;
         if (value > framePeak) framePeak = value;
     }
 
-    // ????????????????????????????????
     visualizerPeak = Math.max(framePeak, visualizerPeak * 0.965, 48);
     const usableHeight = visCanvas.height * VIS_MAX_FILL;
+    const gradient = visCanvasCtx.createLinearGradient(0, 0, 0, visCanvas.height);
+    gradient.addColorStop(0, "rgba(80, 255, 165, 0.92)");
+    gradient.addColorStop(1, "rgba(30, 215, 96, 0.35)");
+    visCanvasCtx.fillStyle = gradient;
 
     for (let i = 0; i < VIS_BAR_COUNT; i++) {
         const normalized = Math.min(1, rawBands[i] / visualizerPeak);
-
-        // ??????????????????????????
         const shaped = Math.pow(normalized, 0.62);
         const targetHeight = Math.max(VIS_MIN_HEIGHT, shaped * usableHeight);
-
-        // ???????????????????????
         const smoothing = targetHeight > smoothedHeights[i] ? 0.42 : 0.16;
         smoothedHeights[i] = smoothedHeights[i] * (1 - smoothing) + targetHeight * smoothing;
 
         const barHeight = Math.min(usableHeight, smoothedHeights[i]);
-        const x = i * barWidth + 1;
-        const width = Math.max(1, barWidth - 2);
-        const y = visCanvas.height - barHeight;
-
-        const gradient = visCanvasCtx.createLinearGradient(0, y, 0, visCanvas.height);
-        gradient.addColorStop(0, "rgba(80, 255, 165, 0.92)");
-        gradient.addColorStop(1, "rgba(30, 215, 96, 0.35)");
-        visCanvasCtx.fillStyle = gradient;
-        visCanvasCtx.fillRect(x, y, width, barHeight);
+        visCanvasCtx.fillRect(
+            i * barWidth + 1,
+            visCanvas.height - barHeight,
+            Math.max(1, barWidth - 2),
+            barHeight
+        );
     }
 }
 
 /* ── Core Playback ─────────────────────────────────────────────── */
-async function playSong(song) {
+async function playSong(song, options = {}) {
+    const { autoplay = true, save = true, smoothScroll = true } = options;
+
     // Clear any pending play‑stats timer from the previous song
     if (playStatsTimer) { clearTimeout(playStatsTimer); playStatsTimer = null; }
 
@@ -948,6 +1173,7 @@ async function playSong(song) {
     currentPlayingContext = { ...currentViewContext };
 
     currentSongId = song.SongID;
+    if (save) saveLastPlayedSong(song);
     songTitle.textContent = song.Title || "未知歌曲";
 
     if (song.CoverPath) {
@@ -972,16 +1198,8 @@ async function playSong(song) {
         });
     }
 
-    // Refresh UI highlights
-    centerList.querySelectorAll(".song-item").forEach(el => el.classList.remove("playing"));
-
-    // 精准找到当前播放的行并加上高亮
-    const activeRow = centerList.querySelector(`.song-item[data-songid="${song.SongID}"]`);
-    if (activeRow) {
-        activeRow.classList.add("playing");
-    }
-
-    // ── 动态渲染双轨音质菜单（PC + 移动端）──
+    // Refresh UI highlight and keep the current song in a comfortable position.
+    updatePlayingRowHighlight(song.SongID, { scroll: true, smooth: smoothScroll });
     const qualitySelects = [document.getElementById("sel-quality-desktop"), document.getElementById("sel-quality-mobile")];
     try {
         const infoResp = await fetch(`${API_BASE}/api/song_info/${song.SongID}?token=${encodeURIComponent(getToken())}`);
@@ -1037,8 +1255,14 @@ async function playSong(song) {
         });
     }
 
-    audioPlayer.play().catch(() => {});
-    coverImg.classList.add("is-playing"); // 封面动效
+    if (autoplay) {
+        audioPlayer.play().catch(() => {});
+        coverImg.classList.add("is-playing");
+    } else {
+        audioPlayer.pause();
+        coverImg.classList.remove("is-playing");
+        if (btnPlayPause) btnPlayPause.textContent = "▶️";
+    }
 
     updatePlayerFavBtn();
 
@@ -1213,35 +1437,16 @@ if (syncLibraryBtn) {
     locateBtn.addEventListener("click", async () => {
         if (!currentPlayingSong) return;
 
-        let activeRow = document.querySelector(".song-item.playing");
-
-        // 如果当前视图找不到这首歌，且我们知道它在哪，就触发"空间跳跃"
-        if (!activeRow && currentPlayingContext) {
-            if (currentPlayingContext.type === 'folder') {
-                renderDirectory(currentPlayingContext.value);
-            } else if (currentPlayingContext.type === 'playlist') {
-                await renderPlaylist(currentPlayingContext.value);
-            } else if (currentPlayingContext.type === 'favorites') {
-                document.getElementById('nav-favorites').click();
-            }
-
-            // 视图切换需要短暂时间渲染 DOM
-            await new Promise(resolve => setTimeout(resolve, 100));
-            activeRow = document.querySelector(`.song-item[data-songid="${currentPlayingSong.SongID}"]`);
+        let activeRow = centerList.querySelector(`.song-item[data-songid="${currentPlayingSong.SongID}"]`);
+        if (!activeRow) {
+            renderSongHome(currentPlayingSong);
+            await new Promise(resolve => requestAnimationFrame(resolve));
+            activeRow = updatePlayingRowHighlight(currentPlayingSong.SongID, { scroll: false });
         }
 
-        // 执行平滑滚动和闪烁高亮
         if (activeRow) {
-            activeRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-            const originalBg = activeRow.style.backgroundColor;
-            activeRow.style.transition = "background-color 0.3s";
-            activeRow.style.backgroundColor = "rgba(30, 215, 96, 0.4)";
-
-            setTimeout(() => {
-                activeRow.style.backgroundColor = originalBg;
-                activeRow.style.transition = "";
-            }, 800);
+            scrollSongRowIntoComfortView(activeRow, { smooth: true });
+            flashSongRow(activeRow);
         }
     });
 })();
@@ -1875,8 +2080,8 @@ setupQualitySelector("sel-quality-mobile");
 
     // Sync mobile player view when a song plays
     const origPlaySong = playSong;
-    playSong = async function(song) {
-        await origPlaySong(song);
+    playSong = async function(song, options = {}) {
+        await origPlaySong(song, options);
         // Mirror cover / title / artists to mobile player view
         const mCover = document.getElementById('mobile-cover-img');
         const mTitle = document.getElementById('mobile-song-title');
@@ -1973,6 +2178,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const offsetSlider = document.getElementById('offset-slider');
     const offsetDisplay = document.getElementById('offset-value-display');
     const root = document.documentElement;
+
+    if (!modeSelect || !sliderContainer || !offsetSlider || !offsetDisplay) {
+        return;
+    }
 
     // 1. 初始化：读取 localStorage 缓存
     const savedMode = localStorage.getItem('addressBarMode') || 'top';

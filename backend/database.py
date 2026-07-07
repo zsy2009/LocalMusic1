@@ -72,6 +72,7 @@ def init_db():
         ("Users", "Province", "NVARCHAR(100) NULL"),
         ("Users", "City", "NVARCHAR(100) NULL"),
         ("Users", "District", "NVARCHAR(100) NULL"),
+        ("Users", "LastSongID", "INT NULL"),
     ]
     for table, col, col_type in migration_columns:
         cursor.execute(f"""
