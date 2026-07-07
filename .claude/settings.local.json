@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python *)",
+      "Bash(pip install *)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:api.github.com)",
+      "Bash(git clone *)",
+      "Bash(grep -E \"VALUES \\\\\\('\\\\d{9,}'\" /tmp/GlobalRegion/db/sql/d_area.sql)",
+      "Bash(sc query *)",
+      "Bash(sqlcmd *)",
+      "Bash(taskkill /F /IM python.exe)",
+      "Bash(taskkill /F /IM sqlcmd.exe)",
+      "Bash(powershell *)"
+    ]
+  }
+}

@@ -1,0 +1,12 @@
+﻿fastapi
+uvicorn
+pyodbc
+sqlalchemy
+bcrypt
+pyjwt
+python-multipart
+mutagen
+requests
+python-dotenv
+httpx
+apscheduler

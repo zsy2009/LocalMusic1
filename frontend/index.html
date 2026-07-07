@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>MusicCloud</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1ed760">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="login-panel">
+        <div class="login-card">
+            <h1>🎵 MusicCloud</h1>
+            <input type="text" id="username" placeholder="用户名" autocomplete="username">
+            <input type="password" id="password" placeholder="密码" autocomplete="current-password">
+            <button id="login-btn" class="btn-primary">登 录</button>
+            <p id="login-error" class="error-msg"></p>
+        </div>
+    </div>
+
+    <div id="player-panel" style="display: none;">
+
+        <!-- ── User profile bar ──────────────────────────────── -->
+        <div id="user-profile-bar">
+            <button id="mobile-menu-btn" class="bar-btn" title="菜单" style="display:none;">☰</button>
+            <div id="user-profile-trigger">
+                <img id="user-avatar" src="" alt="头像">
+                <span id="user-nickname"></span>
+                <div id="user-hover-card" class="glass-card">
+                    <img id="hover-card-avatar" src="" alt="头像">
+                    <h3 id="hover-card-nickname"></h3>
+                    <div style="width: 100%; text-align: center; margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.1);">
+                    <div style="font-size: 13px; color: #fff; margin-bottom: 6px; display: flex; justify-content: center; align-items: center; gap: 5px;">
+                        <span id="loc-weather-text">🌍 获取天气中...</span>
+                        <span id="change-loc-btn" style="cursor: pointer; opacity: 0.8; font-size: 11px; background: rgba(255,255,255,0.15); padding: 2px 6px; border-radius: 4px; transition: background 0.2s;" title="自定义天气地区">切换</span>
+                    </div>
+                    <div id="ip-info-box" style="font-size: 11px; color: #aaa; text-align: center; margin-top: 8px;">
+                        <span id="ip-text">IP: 探测中...</span> | 估算: <span id="ip-loc-text">探测中...</span>
+                    </div>
+                </div>
+                <button id="view-stats-btn" class="btn-primary" style="width: 100%; margin-top: 15px;">📊 听歌统计</button>
+            </div>
+            </div>
+            <div id="search-container">
+                <input type="text" id="search-input" placeholder="🔍 搜索歌曲名称或歌手...">
+            </div>
+            <button id="profile-btn" class="bar-btn" title="个人中心">⚙️</button>
+            <button id="admin-panel-btn" class="bar-btn" title="后台管理" style="display:none;">🛡️</button>
+            <button id="logout-btn" style="background:#e74c3c;color:#fff;border:none;padding:6px 14px;border-radius:6px;cursor:pointer;font-size:13px;margin-left:auto;">退出账号</button>
+        </div>
+
+        <div id="main-content">
+            <div id="view-library" class="mobile-view active">
+            <div id="left-panel" class="glass-panel">
+                <div class="menu-scrollable-area">
+                    <div class="cover-container">
+                        <img id="cover-img" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="封面"
+                             onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 200%22%3E%3Crect fill=%22%23121212%22 width=%22200%22 height=%22200%22 rx=%2212%22/%3E%3Cg transform=%22translate(65 35)%22%3E%3Ccircle cx=%2235%22 cy=%22115%22 r=%2215%22 fill=%22%23222%22/%3E%3Ccircle cx=%2285%22 cy=%22105%22 r=%2215%22 fill=%22%23222%22/%3E%3Cline x1=%2235%22 y1=%22115%22 x2=%2235%22 y2=%2220%22 stroke=%22%23333%22 stroke-width=%226%22/%3E%3Cline x1=%2235%22 y1=%2220%22 x2=%2285%22 y2=%2235%22 stroke=%22%23333%22 stroke-width=%226%22/%3E%3Cline x1=%2285%22 y1=%2235%22 x2=%2285%22 y2=%22105%22 stroke=%22%23333%22 stroke-width=%226%22/%3E%3Ccircle cx=%2235%22 cy=%2220%22 r=%226%22 fill=%22%231ed760%22/%3E%3C/g%3E%3C/svg%3E';this.classList.add('fallback-cover');">
+                    </div>
+                    <h2 id="song-title">未播放任何内容</h2>
+                    <div id="artist-list"></div>
+                    <div id="album-area">
+                        <span class="meta-label">专辑</span>
+                        <span id="song-album" class="clickable-tag">探索你的音乐库</span>
+                    </div>
+                    <div class="menu-functional-area">
+                        <button id="nav-favorites" class="folder-item">❤️ 我喜欢的音乐</button>
+                        <button id="nav-sync-library" class="folder-item" style="display:none;">🔄 同步曲库</button>
+                    </div>
+                </div>
+                <div class="mobile-quality-wrapper hide-on-pc">
+                    <span>🎧 音质偏好：</span>
+                    <select id="sel-quality-mobile" class="quality-selector">
+                        <option value="original">原声流</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="center-panel" class="glass-panel">
+                <div id="center-nav"></div>
+                <div id="center-list"></div>
+            </div>
+
+            <div id="panel-resizer" class="resizer" title="拖拽调整宽度"></div>
+
+            <div id="right-panel" class="glass-panel">
+                <div id="lyrics-container">
+                    <ul id="lyrics-list"></ul>
+                </div>
+            </div>
+            </div><!-- /#view-library -->
+
+            <div id="view-player" class="mobile-view">
+                <div style="display:flex;flex-direction:column;align-items:center;padding:20px;height:100%;overflow-y:auto;">
+                    <div class="cover-container" style="width:260px;height:260px;">
+                        <img id="mobile-cover-img" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="封面" style="width:100%;height:100%;object-fit:cover;border-radius:16px;background:#1a1a1a;">
+                    </div>
+                    <h2 id="mobile-song-title" style="margin-top:20px;color:#fff;text-align:center;">未播放任何内容</h2>
+                    <div id="mobile-artist-list" style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:8px;"></div>
+                    <div id="mobile-lyrics-container" style="width:100%;margin-top:20px;flex:1;overflow-y:auto;">
+                        <ul id="mobile-lyrics-list" style="list-style:none;display:flex;flex-direction:column;gap:8px;"></ul>
+                    </div>
+                </div>
+            </div>
+
+            <div id="view-user" class="mobile-view">
+                <div style="display:flex;flex-direction:column;align-items:center;padding:20px;gap:16px;height:100%;overflow-y:auto;">
+                    <img id="mobile-user-avatar" src="" alt="头像" style="width:80px;height:80px;border-radius:50%;object-fit:cover;border:2px solid #1ed760;background:#1a1a1a;">
+                    <h3 id="mobile-user-nickname" style="color:#fff;"></h3>
+                    <span id="mobile-loc-weather-text" style="font-size:13px;color:#aaa;">🌍 获取天气中...</span>
+                    <button id="mobile-view-stats-btn" class="btn-primary" style="width:80%;">📊 听歌统计</button>
+                    <button id="mobile-profile-btn" class="btn-primary" style="width:80%;background:#333;color:#fff;">⚙️ 个人中心</button>
+                    <button id="mobile-nav-favorites" class="btn-primary" style="width:80%;background:#333;color:#fff;">❤️ 我喜欢的音乐</button>
+                </div>
+            </div>
+        </div>
+
+        <canvas id="visualizer-canvas"></canvas>
+
+        <div id="player-bar">
+            <div class="custom-controls">
+                <select id="sel-quality-desktop" class="quality-selector hide-on-mobile" title="音质选择">
+                    <option value="original">原声流</option>
+                </select>
+                <button id="btn-mode" title="当前: 列表循环">🔁</button>
+                <button id="player-fav-btn" class="favorite-btn" title="喜欢">♡</button>
+                <button id="btn-prev" title="上一曲">⏮</button>
+                <button id="btn-next" title="下一曲">⏭</button>
+            </div>
+            <audio id="audio-player" controls crossorigin="anonymous"></audio>
+        </div>
+
+        <div id="mobile-tab-bar" class="mobile-only">
+            <div class="tab-item active" data-target="view-library">🎵 曲库</div>
+            <div class="tab-item" data-target="view-player">🎤 播放</div>
+            <div class="tab-item" data-target="view-user">👤 我的</div>
+        </div>
+
+    </div>
+
+    <!-- ── Profile Modal ────────────────────────────────────── -->
+    <div id="profile-modal" class="modal">
+        <div class="modal-card">
+            <h2>👤 个人中心</h2>
+
+            <label>修改昵称</label>
+            <div class="modal-row">
+                <input type="text" id="profile-nickname" placeholder="新昵称">
+                <button id="profile-save-btn" class="btn-primary btn-sm">保存</button>
+            </div>
+
+            <label>上传头像</label>
+            <div class="modal-row">
+                <input type="file" id="avatar-upload" accept="image/*">
+            </div>
+
+            <hr>
+
+            <label>修改密码</label>
+            <input type="password" id="pwd-old" placeholder="原密码">
+            <input type="password" id="pwd-new" placeholder="新密码">
+            <input type="password" id="pwd-confirm" placeholder="确认新密码">
+            <button id="pwd-save-btn" class="btn-primary btn-sm">修改密码</button>
+            <p id="profile-msg" class="msg-text"></p>
+
+            <button id="profile-close-btn" class="btn-secondary">关闭</button>
+        </div>
+    </div>
+
+    <!-- ── Admin Modal ──────────────────────────────────────── -->
+    <div id="admin-modal" class="modal">
+        <div class="modal-card">
+            <h2>🛡️ 后台管理 — 创建用户</h2>
+            <input type="text" id="admin-username" placeholder="用户名">
+            <input type="password" id="admin-password" placeholder="密码">
+            <input type="text" id="admin-nickname" placeholder="昵称">
+            <select id="admin-role">
+                <option value="User">User</option>
+                <option value="Admin">Admin</option>
+            </select>
+            <button id="admin-create-btn" class="btn-primary btn-sm">创建用户</button>
+            <p id="admin-msg" class="msg-text"></p>
+
+            <button id="admin-close-btn" class="btn-secondary">关闭</button>
+        </div>
+    </div>
+
+    <!-- ── Playlist Create Modal ─────────────────────────────── -->
+    <div id="playlist-create-modal" class="modal">
+        <div class="modal-card">
+            <h2>➕ 新建歌单</h2>
+            <input type="text" id="new-playlist-name" placeholder="输入歌单名称">
+            <button id="playlist-create-confirm" class="btn-primary btn-sm">确认创建</button>
+            <p id="playlist-create-msg" class="msg-text"></p>
+            <button id="playlist-create-close" class="btn-secondary">取消</button>
+        </div>
+    </div>
+
+    <!-- ── Playlist Select Modal ─────────────────────────────── -->
+    <div id="playlist-select-modal" class="modal">
+        <div class="modal-card">
+            <h2>添加到歌单</h2>
+            <div id="playlist-select-list"></div>
+            <button id="playlist-select-close" class="btn-secondary">取消</button>
+        </div>
+    </div>
+
+    <!-- ── Stats Modal ──────────────────────────────────────── -->
+    <div id="stats-modal" class="modal">
+        <div class="modal-card" style="text-align: center; max-width: 400px;">
+            <h2 style="margin-bottom: 20px; color: #1ed760;">🎵 你的听歌报告</h2>
+            <div id="stats-content">加载中...</div>
+            <button id="stats-close-btn" class="btn-secondary" style="margin-top: 20px;">关闭</button>
+        </div>
+    </div>
+
+    <!-- ── Location Select Modal ──────────────────────────────── -->
+    <div id="location-select-modal" class="modal">
+        <div class="modal-card" style="text-align: center; max-width: 450px;">
+            <h3 style="margin-bottom: 20px; color: #1ed760;">🌍 设定天气展示地区</h3>
+            <div style="display: flex; gap: 10px; margin-bottom: 25px; flex-wrap: wrap;">
+                <select id="sel-country" class="form-select" style="flex:1;min-width:100px;"></select>
+                <select id="sel-province" class="form-select" style="flex:1;min-width:100px;"></select>
+                <select id="sel-city" class="form-select" style="flex:1;min-width:100px;"></select>
+                <select id="sel-district" class="form-select" style="flex:1;min-width:100px;display:none;"></select>
+            </div>
+            <div style="display: flex; gap: 10px; justify-content: center;">
+                <button id="confirm-loc-btn" class="btn-primary" style="flex: 1;">确认</button>
+                <button id="loc-modal-close-btn" class="btn-secondary" style="flex: 1;">取消</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
