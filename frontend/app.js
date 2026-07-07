@@ -40,6 +40,7 @@ const searchInput = document.getElementById("search-input");
 const centerNav   = document.getElementById("center-nav");
 const centerList  = document.getElementById("center-list");
 const lyricsUL    = document.getElementById("lyrics-list");
+const lyricsContainer = document.getElementById("lyrics-container");
 
 // Custom Controls
 const btnMode = document.getElementById("btn-mode");
@@ -100,6 +101,11 @@ let currentSongId = null;
 
 let lyricsData = [];
 let currentLyricIndex = -1;
+let lyricLineEls = [];
+let mobileLyricLineEls = [];
+let activeLyricEl = null;
+let activeMobileLyricEl = null;
+let lyricScrollFrame = 0;
 
 // Playback Modes: 0=List Loop, 1=Single Loop, 2=Shuffle
 const MODES = [
@@ -831,7 +837,12 @@ function filterAndRenderList(type, keyword) {
 
 /* ── Web Audio Visualizer ──────────────────────────────────────── */
 let visDataArray, visMinIndex, visMaxIndex;
+let visualizerPeak = 72;
+let visualizerCanvasWidth = 0;
 const VIS_BAR_COUNT = 64;
+const VIS_HEIGHT = 120;
+const VIS_MAX_FILL = 0.82;
+const VIS_MIN_HEIGHT = 2;
 const smoothedHeights = new Array(VIS_BAR_COUNT).fill(0);
 
 function initVisualizer() {
@@ -859,44 +870,69 @@ function initVisualizer() {
 function drawVisualizer() {
     requestAnimationFrame(drawVisualizer);
 
-    // Mobile: kill visualizer entirely — free CPU completely
+    // Mobile: kill visualizer entirely ? free CPU completely
     if (window.innerWidth <= 768) {
         visCanvasCtx.clearRect(0, 0, visCanvas.width, visCanvas.height);
         return;
     }
 
-    visCanvas.width  = window.innerWidth;
-    visCanvas.height = 120;
+    if (visualizerCanvasWidth !== window.innerWidth || visCanvas.height !== VIS_HEIGHT) {
+        visualizerCanvasWidth = window.innerWidth;
+        visCanvas.width = visualizerCanvasWidth;
+        visCanvas.height = VIS_HEIGHT;
+    }
 
     analyser.getByteFrequencyData(visDataArray);
     visCanvasCtx.clearRect(0, 0, visCanvas.width, visCanvas.height);
 
     const barWidth = visCanvas.width / VIS_BAR_COUNT;
-    const range = visMaxIndex - visMinIndex;
+    const range = Math.max(1, visMaxIndex - visMinIndex);
+    const rawBands = new Array(VIS_BAR_COUNT);
+    let framePeak = 0;
 
     for (let i = 0; i < VIS_BAR_COUNT; i++) {
-        // Linear interpolation into the constrained frequency range
-        const idx = Math.floor(visMinIndex + (i / VIS_BAR_COUNT) * range);
-        let value = visDataArray[idx] || 0;
+        const bandStart = Math.floor(visMinIndex + (i / VIS_BAR_COUNT) * range);
+        const bandEnd = Math.max(bandStart + 1, Math.floor(visMinIndex + ((i + 1) / VIS_BAR_COUNT) * range));
+        let sum = 0;
+        let count = 0;
 
-        // High-frequency gain compensation — milder treble lift
-        const boost = 1 + (i / VIS_BAR_COUNT) * 0.8;
-        value = Math.min(255, value * boost);
+        for (let idx = bandStart; idx < bandEnd && idx < visDataArray.length; idx++) {
+            sum += visDataArray[idx] || 0;
+            count++;
+        }
 
-        // Nonlinear sqrt compression → tames loud peaks, lifts quiet detail
-        const compressed = Math.sqrt(value / 255);
+        // ???????????????????????
+        const trebleLift = 1 + (i / (VIS_BAR_COUNT - 1)) * 0.55;
+        const value = (count ? sum / count : 0) * trebleLift;
+        rawBands[i] = value;
+        if (value > framePeak) framePeak = value;
+    }
 
-        // Attenuate to keep a comfortable ceiling, then apply EMA smoothing
-        const targetHeight = compressed * visCanvas.height * 0.75;
-        smoothedHeights[i] = smoothedHeights[i] * 0.7 + targetHeight * 0.3;
-        const barHeight = smoothedHeights[i];
-        visCanvasCtx.fillStyle = "#1ed760";
-        visCanvasCtx.fillRect(
-            i * barWidth,
-            visCanvas.height - barHeight,
-            barWidth - 1,
-            barHeight
-        );
+    // ????????????????????????????????
+    visualizerPeak = Math.max(framePeak, visualizerPeak * 0.965, 48);
+    const usableHeight = visCanvas.height * VIS_MAX_FILL;
+
+    for (let i = 0; i < VIS_BAR_COUNT; i++) {
+        const normalized = Math.min(1, rawBands[i] / visualizerPeak);
+
+        // ??????????????????????????
+        const shaped = Math.pow(normalized, 0.62);
+        const targetHeight = Math.max(VIS_MIN_HEIGHT, shaped * usableHeight);
+
+        // ???????????????????????
+        const smoothing = targetHeight > smoothedHeights[i] ? 0.42 : 0.16;
+        smoothedHeights[i] = smoothedHeights[i] * (1 - smoothing) + targetHeight * smoothing;
+
+        const barHeight = Math.min(usableHeight, smoothedHeights[i]);
+        const x = i * barWidth + 1;
+        const width = Math.max(1, barWidth - 2);
+        const y = visCanvas.height - barHeight;
+
+        const gradient = visCanvasCtx.createLinearGradient(0, y, 0, visCanvas.height);
+        gradient.addColorStop(0, "rgba(80, 255, 165, 0.92)");
+        gradient.addColorStop(1, "rgba(30, 215, 96, 0.35)");
+        visCanvasCtx.fillStyle = gradient;
+        visCanvasCtx.fillRect(x, y, width, barHeight);
     }
 }
 
@@ -1227,31 +1263,63 @@ audioPlayer.addEventListener("ended", () => {
     }
 });
 
-/* ── Lyrics Logic (unchanged core, just cleaner) ───────────────── */
+/* Lyrics Logic: low-end friendly sync */
+function resetLyricsView() {
+    lyricsUL.replaceChildren();
+    const mobileLyricsUL = document.getElementById("mobile-lyrics-list");
+    if (mobileLyricsUL) mobileLyricsUL.replaceChildren();
+
+    lyricsData = [];
+    currentLyricIndex = -1;
+    lyricLineEls = [];
+    mobileLyricLineEls = [];
+    activeLyricEl = null;
+    activeMobileLyricEl = null;
+    if (lyricScrollFrame) {
+        cancelAnimationFrame(lyricScrollFrame);
+        lyricScrollFrame = 0;
+    }
+}
+
+function createLyricLine(item, idx) {
+    const li = document.createElement("li");
+    li.textContent = item.text;
+    li.dataset.index = idx;
+    li.dataset.time = item.time;
+    return li;
+}
+
+function renderMobileLyrics() {
+    const mobileLyricsUL = document.getElementById("mobile-lyrics-list");
+    if (!mobileLyricsUL) return;
+
+    const fragment = document.createDocumentFragment();
+    mobileLyricLineEls = lyricsData.map((item, idx) => {
+        const li = createLyricLine(item, idx);
+        fragment.appendChild(li);
+        return li;
+    });
+    mobileLyricsUL.replaceChildren(fragment);
+    activeMobileLyricEl = null;
+}
+
 async function loadLyrics(songId) {
-    lyricsUL.innerHTML = ""; lyricsData = []; currentLyricIndex = -1;
+    resetLyricsView();
     try {
         const resp = await fetch(`${API_BASE}/api/lyrics/${songId}`, { headers: authHeaders() });
         if (!resp.ok) return;
         const data = await resp.json();
         if (!data.lyrics) return;
+
         lyricsData = parseLRC(data.lyrics);
-        lyricsData.forEach((item, idx) => {
-            const li = document.createElement("li");
-            li.textContent = item.text;
-            li.dataset.index = idx;
-            li.dataset.time = item.time;
-            li.addEventListener("click", function() {
-                const targetTime = parseFloat(this.dataset.time);
-                if (!isNaN(targetTime)) {
-                    audioPlayer.currentTime = targetTime;
-                    if (audioPlayer.paused) {
-                        audioPlayer.play();
-                    }
-                }
-            });
-            lyricsUL.appendChild(li);
+        const fragment = document.createDocumentFragment();
+        lyricLineEls = lyricsData.map((item, idx) => {
+            const li = createLyricLine(item, idx);
+            fragment.appendChild(li);
+            return li;
         });
+        lyricsUL.replaceChildren(fragment);
+        renderMobileLyrics();
     } catch (e) { console.error("loadLyrics error:", e); }
 }
 
@@ -1267,55 +1335,71 @@ function parseLRC(lrcText) {
     return result.sort((a, b) => a.time - b.time);
 }
 
+function findLyricIndex(time) {
+    let low = 0;
+    let high = lyricsData.length - 1;
+    let activeIdx = -1;
+
+    while (low <= high) {
+        const mid = (low + high) >> 1;
+        if (lyricsData[mid].time <= time) {
+            activeIdx = mid;
+            low = mid + 1;
+        } else {
+            high = mid - 1;
+        }
+    }
+
+    return activeIdx;
+}
+
+function seekToLyricFromElement(el) {
+    const targetTime = parseFloat(el.dataset.time);
+    if (!isNaN(targetTime)) {
+        audioPlayer.currentTime = targetTime;
+        if (audioPlayer.paused) audioPlayer.play();
+    }
+}
+
+lyricsUL.addEventListener("click", (e) => {
+    const li = e.target.closest("li[data-time]");
+    if (li) seekToLyricFromElement(li);
+});
+
+function centerLyricLine(container, line, extraOffset = 0) {
+    if (!container || !line) return;
+    const targetTop = line.offsetTop - (container.clientHeight - line.offsetHeight) / 2 + extraOffset;
+    container.scrollTop = Math.max(0, targetTop);
+}
+
+function updateActiveLyric(activeIdx) {
+    if (activeLyricEl) activeLyricEl.classList.remove("active-lyric");
+    if (activeMobileLyricEl) activeMobileLyricEl.classList.remove("active-lyric");
+
+    activeLyricEl = activeIdx >= 0 ? lyricLineEls[activeIdx] : null;
+    activeMobileLyricEl = activeIdx >= 0 ? mobileLyricLineEls[activeIdx] : null;
+
+    if (activeLyricEl) activeLyricEl.classList.add("active-lyric");
+    if (activeMobileLyricEl) activeMobileLyricEl.classList.add("active-lyric");
+
+    if (lyricScrollFrame) cancelAnimationFrame(lyricScrollFrame);
+    lyricScrollFrame = requestAnimationFrame(() => {
+        lyricScrollFrame = 0;
+        if (window.innerWidth > 768) {
+            centerLyricLine(lyricsContainer, activeLyricEl);
+        } else {
+            const mobileLyricsContainer = document.getElementById("mobile-lyrics-container");
+            centerLyricLine(mobileLyricsContainer, activeMobileLyricEl, 80);
+        }
+    });
+}
+
 audioPlayer.addEventListener("timeupdate", () => {
     if (!lyricsData.length) return;
-    const time = audioPlayer.currentTime;
-    let activeIdx = -1;
-    for (let i = 0; i < lyricsData.length; i++) {
-        if (lyricsData[i].time <= time) activeIdx = i; else break;
-    }
+    const activeIdx = findLyricIndex(audioPlayer.currentTime);
     if (activeIdx === currentLyricIndex) return;
     currentLyricIndex = activeIdx;
-
-    // 1. 桌面端歌词同步 (保留平滑滚动)
-    lyricsUL.querySelectorAll(".active-lyric").forEach(el => el.classList.remove("active-lyric"));
-    if (activeIdx >= 0) {
-        const li = lyricsUL.querySelector(`li[data-index="${activeIdx}"]`);
-        if (li) {
-            li.classList.add("active-lyric");
-            if (window.innerWidth > 768) {
-                li.scrollIntoView({ behavior: "smooth", block: "center" });
-            }
-        }
-    }
-
-    // 2. 移动端歌词同步 (简单粗暴的固定偏移法)
-    const mobileLyricsContainer = document.getElementById("mobile-lyrics-container");
-    const mobileLyricsUL = document.getElementById("mobile-lyrics-list");
-    if (mobileLyricsUL && mobileLyricsContainer) {
-        mobileLyricsUL.querySelectorAll(".active-lyric").forEach(el => el.classList.remove("active-lyric"));
-        if (activeIdx >= 0) {
-            const mLi = mobileLyricsUL.querySelector(`li[data-index="${activeIdx}"]`);
-            if (mLi) {
-                mLi.classList.add("active-lyric");
-                if (window.innerWidth <= 768) {
-                    requestAnimationFrame(() => {
-                        const cRect = mobileLyricsContainer.getBoundingClientRect();
-                        const liRect = mLi.getBoundingClientRect();
-
-                        // 基础居中计算
-                        const offset = liRect.top - cRect.top - (cRect.height / 2) + (liRect.height / 2);
-
-                        // 【笨方法补丁】：直接在算好的位置上，额外往下滚 80 像素
-                        // 往下滚得越多，视觉上歌词就被"往上提"得越高
-                        const dumbBump = 80;
-
-                        mobileLyricsContainer.scrollTop += (offset + dumbBump);
-                    });
-                }
-            }
-        }
-    }
+    updateActiveLyric(activeIdx);
 });
 
 /* ─────────────────────────────────────────────────────────────────
@@ -1840,7 +1924,7 @@ setupQualitySelector("sel-quality-mobile");
                 });
             }
         }
-        if (mLyrics && deskLyrics) mLyrics.innerHTML = deskLyrics.innerHTML;
+        if (mLyrics && deskLyrics) renderMobileLyrics();
     };
 
     // Sync mobile user view with profile data
@@ -1877,15 +1961,7 @@ setupQualitySelector("sel-quality-mobile");
     if (mobileLyricsList) {
         mobileLyricsList.addEventListener('click', (e) => {
             const li = e.target.closest('li');
-            if (li && li.dataset.time) {
-                const targetTime = parseFloat(li.dataset.time);
-                if (!isNaN(targetTime)) {
-                    audioPlayer.currentTime = targetTime;
-                    if (audioPlayer.paused) {
-                        audioPlayer.play();
-                    }
-                }
-            }
+            if (li && li.dataset.time) seekToLyricFromElement(li);
         });
     }
 })();
