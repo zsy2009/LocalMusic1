@@ -1,4 +1,5 @@
 import os
+import sys
 import subprocess
 import uuid
 import json
@@ -12,8 +13,18 @@ import httpx
 import requests
 from apscheduler.schedulers.background import BackgroundScheduler
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_ROOT = os.path.dirname(BASE_DIR)
+ENV_FILE = os.path.join(BASE_DIR, ".env")
+COVERS_DIR = os.path.join(BASE_DIR, "covers")
+AVATARS_DIR = os.path.join(BASE_DIR, "avatars")
+FRONTEND_DIR = os.path.join(PROJECT_ROOT, "frontend")
+
+if BASE_DIR not in sys.path:
+    sys.path.insert(0, BASE_DIR)
+
 # ── Load .env file at startup ───────────────────────────────────────
-load_dotenv()
+load_dotenv(ENV_FILE)
 from auth import verify_password, create_access_token, get_password_hash
 from fastapi import FastAPI, HTTPException, Request, Depends, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
@@ -106,17 +117,17 @@ def init_db_schema():
 init_db_schema()
 
 # ── Load global regions data at startup ─────────────────────────────
-REGIONS_FILE = os.path.join(os.path.dirname(__file__), "global_regions.json")
+REGIONS_FILE = os.path.join(BASE_DIR, "global_regions.json")
 with open(REGIONS_FILE, "r", encoding="utf-8") as f:
     GLOBAL_REGIONS = json.load(f)
 print(f"Loaded {len(GLOBAL_REGIONS)} countries from global_regions.json")
 
 # ── Static files mount ────────────────────────────────────────────
-app.mount("/covers", StaticFiles(directory="covers"), name="covers")
+os.makedirs(COVERS_DIR, exist_ok=True)
+app.mount("/covers", StaticFiles(directory=COVERS_DIR), name="covers")
 
-AVATARS_DIR = os.path.join(os.path.dirname(__file__), "avatars")
 os.makedirs(AVATARS_DIR, exist_ok=True)
-app.mount("/avatars", StaticFiles(directory="avatars"), name="avatars")
+app.mount("/avatars", StaticFiles(directory=AVATARS_DIR), name="avatars")
 
 # ── CORS middleware ────────────────────────────────────────────────
 app.add_middleware(
@@ -1316,7 +1327,7 @@ def stream_song(song_id: int, request: Request):
 # ────────────────────────────────────────────────────────────────────
 
 # ── Mount frontend static site (must be last to avoid shadowing /api) ─
-app.mount("/", StaticFiles(directory="../frontend", html=True), name="frontend")
+app.mount("/", StaticFiles(directory=FRONTEND_DIR, html=True), name="frontend")
 
 if __name__ == "__main__":
     import uvicorn

@@ -11,9 +11,13 @@ from mutagen.wave import WAVE
 from database import get_db_connection
 
 from dotenv import load_dotenv
-load_dotenv()
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+ENV_FILE = os.path.join(BASE_DIR, ".env")
+load_dotenv(ENV_FILE)
+
 MUSIC_DIR = os.getenv("MUSIC_DIR", r"D:\RegularStorage\Music")
-COVERS_DIR = r'D:\MusicCloud\backend\covers'
+COVERS_DIR = os.path.join(BASE_DIR, "covers")
 
 os.makedirs(COVERS_DIR, exist_ok=True)
 
