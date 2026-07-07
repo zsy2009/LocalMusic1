@@ -109,9 +109,9 @@ let lyricScrollFrame = 0;
 
 // Playback Modes: 0=List Loop, 1=Single Loop, 2=Shuffle
 const MODES = [
-    { id: 0, icon: "🔁", title: "当前: 列表循环" },
-    { id: 1, icon: "🔂", title: "当前: 单曲循环" },
-    { id: 2, icon: "🔀", title: "当前: 随机播放" }
+    { id: 0, icon: "\u{1F501}", titleKey: "modeList" },
+    { id: 1, icon: "\u{1F502}", titleKey: "modeSingle" },
+    { id: 2, icon: "\u{1F500}", titleKey: "modeShuffle" }
 ];
 let currentModeIndex = 0;
 
@@ -133,6 +133,658 @@ const LAST_PLAYED_KEY = "musiccloud_last_played";
 function getToken() { return localStorage.getItem("musiccloud_token"); }
 function setToken(token) { localStorage.setItem("musiccloud_token", token); }
 function authHeaders() { return { "Authorization": `Bearer ${getToken()}`, "Content-Type": "application/json" }; }
+
+
+const I18N_LANG_KEY = "musiccloud_language";
+const I18N_LANGS = ["zh-CN", "zh-TW", "en", "ja", "ko"];
+const I18N = {
+    "zh-CN": {
+        "language": "语言",
+        "username": "用户名",
+        "password": "密码",
+        "login": "登 录",
+        "menu": "菜单",
+        "avatar": "头像",
+        "loadingWeather": "获取天气中...",
+        "customWeather": "自定义天气地区",
+        "switch": "切换",
+        "ipDetecting": "IP: 探测中...",
+        "estimated": "估算",
+        "stats": "听歌统计",
+        "searchPlaceholder": "搜索歌曲名称或歌手...",
+        "profileCenter": "个人中心",
+        "adminPanel": "后台管理",
+        "logout": "退出账号",
+        "noSong": "未播放任何内容",
+        "exploreLibrary": "探索你的音乐库",
+        "album": "专辑",
+        "favorites": "我喜欢的音乐",
+        "mobilePlayer": "播放器",
+        "qualityPreference": "音质偏好：",
+        "qualityTitle": "音质选择",
+        "prev": "上一曲",
+        "next": "下一曲",
+        "originalStream": "原声",
+        "profileTitle": "个人中心",
+        "nickname": "昵称",
+        "save": "保存",
+        "changePassword": "修改密码",
+        "oldPassword": "旧密码",
+        "newPassword": "新密码",
+        "confirmPassword": "确认新密码",
+        "close": "关闭",
+        "createUserTitle": "后台管理 - 创建用户",
+        "role": "角色",
+        "user": "普通用户",
+        "admin": "管理员",
+        "createUser": "创建用户",
+        "createPlaylistTitle": "新建歌单",
+        "playlistName": "歌单名称",
+        "create": "创建",
+        "selectPlaylistTitle": "添加到歌单",
+        "cancel": "取消",
+        "weatherLocationTitle": "设定天气展示地区",
+        "country": "国家 / 地区",
+        "province": "省 / 州",
+        "city": "城市",
+        "district": "区 / 县",
+        "confirm": "确认",
+        "myPlaylists": "我的歌单",
+        "newPlaylist": "新建歌单",
+        "folders": "文件夹",
+        "rootSongs": "根目录歌曲 ({count})",
+        "backRoot": "返回根目录",
+        "backAllSongs": "返回所有歌曲",
+        "clearFilter": "清除筛选并返回",
+        "filterResults": "筛选结果：{keyword} ({count})",
+        "noMatch": "没有匹配的歌曲",
+        "emptyPlaylist": "歌单中暂无歌曲",
+        "noPlaylist": "暂无歌单，请先创建",
+        "noFavorites": "还没有收藏歌曲",
+        "loadFailed": "加载失败",
+        "playlistLoadFailed": "加载歌单失败",
+        "addToPlaylist": "添加到歌单",
+        "favorite": "喜欢",
+        "locateCurrent": "定位当前播放",
+        "locateCurrentTitle": "跳转到正在播放的歌曲",
+        "syncing": "正在同步...",
+        "syncDone": "同步完成",
+        "syncFailed": "同步失败",
+        "syncError": "同步出错",
+        "unknownSong": "未知歌曲",
+        "unknownAlbum": "未知专辑",
+        "unknownArtist": "未知歌手",
+        "unknown": "未知",
+        "enterCredentials": "请输入用户名和密码",
+        "loginFailed": "登录失败",
+        "networkError": "网络错误，无法连接服务器",
+        "allFieldsRequired": "请填写所有字段",
+        "userCreateSuccess": "用户创建成功",
+        "requestFailed": "请求失败",
+        "createSuccess": "创建成功",
+        "createFailed": "创建失败",
+        "enterPlaylistName": "请输入歌单名称",
+        "addFailed": "添加失败",
+        "addedToPlaylist": "已添加到“{name}”",
+        "passwordAllFields": "请填写所有密码字段",
+        "passwordMismatch": "两次新密码不一致",
+        "passwordTooShort": "新密码至少 4 位",
+        "passwordChanged": "密码修改成功，请重新登录",
+        "deleteFailed": "删除失败",
+        "weatherLoading": "获取天气中...",
+        "weatherFailed": "天气获取失败",
+        "locationUnknown": "未知地区",
+        "fetchingWeather": "正在获取天气...",
+        "saveLocationFailed": "保存失败",
+        "locationSaved": "地区已保存: {location}",
+        "modeList": "当前: 列表循环",
+        "modeSingle": "当前: 单曲循环",
+        "modeShuffle": "当前: 随机播放"
+    },
+    "zh-TW": {
+        "language": "語言",
+        "username": "使用者名稱",
+        "password": "密碼",
+        "login": "登 入",
+        "menu": "菜单",
+        "avatar": "Avatar",
+        "loadingWeather": "Loading weather...",
+        "customWeather": "Custom weather location",
+        "switch": "Change",
+        "ipDetecting": "IP: Detecting...",
+        "estimated": "Estimated",
+        "stats": "听歌统计",
+        "searchPlaceholder": "搜尋歌曲名稱或歌手...",
+        "profileCenter": "個人中心",
+        "adminPanel": "後台管理",
+        "logout": "登出帳號",
+        "noSong": "尚未播放任何內容",
+        "exploreLibrary": "探索你的音樂庫",
+        "album": "專輯",
+        "favorites": "我喜歡的音樂",
+        "mobilePlayer": "Player",
+        "qualityPreference": "音质偏好：",
+        "qualityTitle": "音质选择",
+        "prev": "上一曲",
+        "next": "下一曲",
+        "originalStream": "Original stream",
+        "profileTitle": "个人中心",
+        "nickname": "昵称",
+        "save": "保存",
+        "changePassword": "修改密码",
+        "oldPassword": "旧密码",
+        "newPassword": "新密码",
+        "confirmPassword": "确认新密码",
+        "close": "关闭",
+        "createUserTitle": "后台管理 - 创建用户",
+        "role": "角色",
+        "user": "普通用户",
+        "admin": "管理员",
+        "createUser": "创建用户",
+        "createPlaylistTitle": "新建歌单",
+        "playlistName": "歌单名称",
+        "create": "创建",
+        "selectPlaylistTitle": "添加到歌单",
+        "cancel": "取消",
+        "weatherLocationTitle": "设定天气展示地区",
+        "country": "国家 / 地区",
+        "province": "省 / 州",
+        "city": "城市",
+        "district": "区 / 县",
+        "confirm": "确认",
+        "myPlaylists": "我的歌單",
+        "newPlaylist": "新增歌單",
+        "folders": "資料夾",
+        "rootSongs": "根目錄歌曲 ({count})",
+        "backRoot": "返回根目錄",
+        "backAllSongs": "返回所有歌曲",
+        "clearFilter": "清除筛选并返回",
+        "filterResults": "筛选结果：{keyword} ({count})",
+        "noMatch": "没有匹配的歌曲",
+        "emptyPlaylist": "歌单中暂无歌曲",
+        "noPlaylist": "暂无歌单，请先创建",
+        "noFavorites": "还没有收藏歌曲",
+        "loadFailed": "加载失败",
+        "playlistLoadFailed": "加载歌单失败",
+        "addToPlaylist": "添加到歌单",
+        "favorite": "喜欢",
+        "locateCurrent": "定位目前播放",
+        "locateCurrentTitle": "跳转到正在播放的歌曲",
+        "syncing": "正在同步...",
+        "syncDone": "同步完成",
+        "syncFailed": "同步失败",
+        "syncError": "同步出错",
+        "unknownSong": "未知歌曲",
+        "unknownAlbum": "未知專輯",
+        "unknownArtist": "未知歌手",
+        "unknown": "Unknown",
+        "enterCredentials": "请输入用户名和密码",
+        "loginFailed": "登录失败",
+        "networkError": "网络错误，无法连接服务器",
+        "allFieldsRequired": "Please fill in all fields",
+        "userCreateSuccess": "User created",
+        "requestFailed": "Request failed",
+        "createSuccess": "Created",
+        "createFailed": "Create failed",
+        "enterPlaylistName": "Please enter a playlist name",
+        "addFailed": "Add failed",
+        "addedToPlaylist": "Added to \"{name}\"",
+        "passwordAllFields": "Please fill in all password fields",
+        "passwordMismatch": "The two new passwords do not match",
+        "passwordTooShort": "New password must be at least 4 characters",
+        "passwordChanged": "Password changed. Please log in again.",
+        "deleteFailed": "Delete failed. Please try again later.",
+        "weatherLoading": "Loading weather...",
+        "weatherFailed": "Weather unavailable",
+        "locationUnknown": "Location unavailable",
+        "fetchingWeather": "Fetching weather...",
+        "saveLocationFailed": "Network error. Save failed.",
+        "locationSaved": "Location saved: {location}",
+        "modeList": "目前: 列表循環",
+        "modeSingle": "目前: 單曲循環",
+        "modeShuffle": "目前: 隨機播放"
+    },
+    "en": {
+        "language": "Language",
+        "username": "Username",
+        "password": "Password",
+        "login": "Log in",
+        "menu": "Menu",
+        "avatar": "Avatar",
+        "loadingWeather": "Loading weather...",
+        "customWeather": "Custom weather location",
+        "switch": "Change",
+        "ipDetecting": "IP: Detecting...",
+        "estimated": "Estimated",
+        "stats": "Listening stats",
+        "searchPlaceholder": "Search songs or artists...",
+        "profileCenter": "Profile",
+        "adminPanel": "Admin",
+        "logout": "Log out",
+        "noSong": "Nothing playing",
+        "exploreLibrary": "Explore your music library",
+        "album": "Album",
+        "favorites": "Liked Songs",
+        "mobilePlayer": "Player",
+        "qualityPreference": "Quality:",
+        "qualityTitle": "Audio quality",
+        "prev": "Previous track",
+        "next": "Next track",
+        "originalStream": "Original stream",
+        "profileTitle": "Profile",
+        "nickname": "Nickname",
+        "save": "Save",
+        "changePassword": "Change password",
+        "oldPassword": "Current password",
+        "newPassword": "New password",
+        "confirmPassword": "Confirm new password",
+        "close": "Close",
+        "createUserTitle": "Admin - Create user",
+        "role": "Role",
+        "user": "User",
+        "admin": "Admin",
+        "createUser": "Create user",
+        "createPlaylistTitle": "New playlist",
+        "playlistName": "Playlist name",
+        "create": "Create",
+        "selectPlaylistTitle": "Add to playlist",
+        "cancel": "Cancel",
+        "weatherLocationTitle": "Weather display location",
+        "country": "Country / Region",
+        "province": "Province / State",
+        "city": "City",
+        "district": "District",
+        "confirm": "Confirm",
+        "myPlaylists": "My Playlists",
+        "newPlaylist": "New playlist",
+        "folders": "Folders",
+        "rootSongs": "Root songs ({count})",
+        "backRoot": "Back to root",
+        "backAllSongs": "Back to all songs",
+        "clearFilter": "Clear filter and go back",
+        "filterResults": "Filter results: {keyword} ({count})",
+        "noMatch": "No matching songs",
+        "emptyPlaylist": "This playlist is empty",
+        "noPlaylist": "No playlists yet. Create one first.",
+        "noFavorites": "No liked songs yet",
+        "loadFailed": "Load failed",
+        "playlistLoadFailed": "Failed to load playlist",
+        "addToPlaylist": "Add to playlist",
+        "favorite": "Like",
+        "locateCurrent": "Locate current song",
+        "locateCurrentTitle": "Jump to the currently playing song",
+        "syncing": "Syncing...",
+        "syncDone": "Sync complete",
+        "syncFailed": "Sync failed",
+        "syncError": "Sync error",
+        "unknownSong": "Unknown song",
+        "unknownAlbum": "Unknown album",
+        "unknownArtist": "Unknown artist",
+        "unknown": "Unknown",
+        "enterCredentials": "Please enter username and password",
+        "loginFailed": "Login failed",
+        "networkError": "Network error. Cannot connect to server.",
+        "allFieldsRequired": "Please fill in all fields",
+        "userCreateSuccess": "User created",
+        "requestFailed": "Request failed",
+        "createSuccess": "Created",
+        "createFailed": "Create failed",
+        "enterPlaylistName": "Please enter a playlist name",
+        "addFailed": "Add failed",
+        "addedToPlaylist": "Added to \"{name}\"",
+        "passwordAllFields": "Please fill in all password fields",
+        "passwordMismatch": "The two new passwords do not match",
+        "passwordTooShort": "New password must be at least 4 characters",
+        "passwordChanged": "Password changed. Please log in again.",
+        "deleteFailed": "Delete failed. Please try again later.",
+        "weatherLoading": "Loading weather...",
+        "weatherFailed": "Weather unavailable",
+        "locationUnknown": "Location unavailable",
+        "fetchingWeather": "Fetching weather...",
+        "saveLocationFailed": "Network error. Save failed.",
+        "locationSaved": "Location saved: {location}",
+        "modeList": "Current: List repeat",
+        "modeSingle": "Current: Repeat one",
+        "modeShuffle": "Current: Shuffle"
+    },
+    "ja": {
+        "language": "言語",
+        "username": "ユーザー名",
+        "password": "パスワード",
+        "login": "ログイン",
+        "menu": "メニュー",
+        "avatar": "Avatar",
+        "loadingWeather": "Loading weather...",
+        "customWeather": "Custom weather location",
+        "switch": "Change",
+        "ipDetecting": "IP: Detecting...",
+        "estimated": "Estimated",
+        "stats": "再生統計",
+        "searchPlaceholder": "曲名またはアーティストを検索...",
+        "profileCenter": "プロフィール",
+        "adminPanel": "管理",
+        "logout": "ログアウト",
+        "noSong": "再生中の曲はありません",
+        "exploreLibrary": "音楽ライブラリを探す",
+        "album": "アルバム",
+        "favorites": "お気に入り",
+        "mobilePlayer": "Player",
+        "qualityPreference": "Quality:",
+        "qualityTitle": "Audio quality",
+        "prev": "Previous track",
+        "next": "Next track",
+        "originalStream": "Original stream",
+        "profileTitle": "Profile",
+        "nickname": "Nickname",
+        "save": "Save",
+        "changePassword": "Change password",
+        "oldPassword": "Current password",
+        "newPassword": "New password",
+        "confirmPassword": "Confirm new password",
+        "close": "Close",
+        "createUserTitle": "Admin - Create user",
+        "role": "Role",
+        "user": "User",
+        "admin": "Admin",
+        "createUser": "Create user",
+        "createPlaylistTitle": "New playlist",
+        "playlistName": "Playlist name",
+        "create": "Create",
+        "selectPlaylistTitle": "Add to playlist",
+        "cancel": "Cancel",
+        "weatherLocationTitle": "Weather display location",
+        "country": "Country / Region",
+        "province": "Province / State",
+        "city": "City",
+        "district": "District",
+        "confirm": "Confirm",
+        "myPlaylists": "マイプレイリスト",
+        "newPlaylist": "新規プレイリスト",
+        "folders": "フォルダー",
+        "rootSongs": "ルートの曲 ({count})",
+        "backRoot": "ルートへ戻る",
+        "backAllSongs": "すべての曲へ戻る",
+        "clearFilter": "Clear filter and go back",
+        "filterResults": "Filter results: {keyword} ({count})",
+        "noMatch": "No matching songs",
+        "emptyPlaylist": "This playlist is empty",
+        "noPlaylist": "No playlists yet. Create one first.",
+        "noFavorites": "No liked songs yet",
+        "loadFailed": "Load failed",
+        "playlistLoadFailed": "Failed to load playlist",
+        "addToPlaylist": "Add to playlist",
+        "favorite": "Like",
+        "locateCurrent": "再生中の曲へ",
+        "locateCurrentTitle": "Jump to the currently playing song",
+        "syncing": "Syncing...",
+        "syncDone": "Sync complete",
+        "syncFailed": "Sync failed",
+        "syncError": "Sync error",
+        "unknownSong": "不明な曲",
+        "unknownAlbum": "不明なアルバム",
+        "unknownArtist": "不明なアーティスト",
+        "unknown": "Unknown",
+        "enterCredentials": "Please enter username and password",
+        "loginFailed": "Login failed",
+        "networkError": "Network error. Cannot connect to server.",
+        "allFieldsRequired": "Please fill in all fields",
+        "userCreateSuccess": "User created",
+        "requestFailed": "Request failed",
+        "createSuccess": "Created",
+        "createFailed": "Create failed",
+        "enterPlaylistName": "Please enter a playlist name",
+        "addFailed": "Add failed",
+        "addedToPlaylist": "Added to \"{name}\"",
+        "passwordAllFields": "Please fill in all password fields",
+        "passwordMismatch": "The two new passwords do not match",
+        "passwordTooShort": "New password must be at least 4 characters",
+        "passwordChanged": "Password changed. Please log in again.",
+        "deleteFailed": "Delete failed. Please try again later.",
+        "weatherLoading": "Loading weather...",
+        "weatherFailed": "Weather unavailable",
+        "locationUnknown": "Location unavailable",
+        "fetchingWeather": "Fetching weather...",
+        "saveLocationFailed": "Network error. Save failed.",
+        "locationSaved": "Location saved: {location}",
+        "modeList": "現在: リストリピート",
+        "modeSingle": "現在: 1曲リピート",
+        "modeShuffle": "現在: シャッフル"
+    },
+    "ko": {
+        "language": "언어",
+        "username": "사용자 이름",
+        "password": "비밀번호",
+        "login": "로그인",
+        "menu": "메뉴",
+        "avatar": "Avatar",
+        "loadingWeather": "Loading weather...",
+        "customWeather": "Custom weather location",
+        "switch": "Change",
+        "ipDetecting": "IP: Detecting...",
+        "estimated": "Estimated",
+        "stats": "청취 통계",
+        "searchPlaceholder": "곡명 또는 아티스트 검색...",
+        "profileCenter": "프로필",
+        "adminPanel": "관리",
+        "logout": "로그아웃",
+        "noSong": "재생 중인 곡 없음",
+        "exploreLibrary": "음악 라이브러리 둘러보기",
+        "album": "앨범",
+        "favorites": "좋아요 표시한 음악",
+        "mobilePlayer": "Player",
+        "qualityPreference": "Quality:",
+        "qualityTitle": "Audio quality",
+        "prev": "Previous track",
+        "next": "Next track",
+        "originalStream": "Original stream",
+        "profileTitle": "Profile",
+        "nickname": "Nickname",
+        "save": "Save",
+        "changePassword": "Change password",
+        "oldPassword": "Current password",
+        "newPassword": "New password",
+        "confirmPassword": "Confirm new password",
+        "close": "Close",
+        "createUserTitle": "Admin - Create user",
+        "role": "Role",
+        "user": "User",
+        "admin": "Admin",
+        "createUser": "Create user",
+        "createPlaylistTitle": "New playlist",
+        "playlistName": "Playlist name",
+        "create": "Create",
+        "selectPlaylistTitle": "Add to playlist",
+        "cancel": "Cancel",
+        "weatherLocationTitle": "Weather display location",
+        "country": "Country / Region",
+        "province": "Province / State",
+        "city": "City",
+        "district": "District",
+        "confirm": "Confirm",
+        "myPlaylists": "내 플레이리스트",
+        "newPlaylist": "새 플레이리스트",
+        "folders": "폴더",
+        "rootSongs": "루트 곡 ({count})",
+        "backRoot": "루트로 돌아가기",
+        "backAllSongs": "모든 곡으로 돌아가기",
+        "clearFilter": "Clear filter and go back",
+        "filterResults": "Filter results: {keyword} ({count})",
+        "noMatch": "No matching songs",
+        "emptyPlaylist": "This playlist is empty",
+        "noPlaylist": "No playlists yet. Create one first.",
+        "noFavorites": "No liked songs yet",
+        "loadFailed": "Load failed",
+        "playlistLoadFailed": "Failed to load playlist",
+        "addToPlaylist": "Add to playlist",
+        "favorite": "Like",
+        "locateCurrent": "현재 곡 찾기",
+        "locateCurrentTitle": "Jump to the currently playing song",
+        "syncing": "Syncing...",
+        "syncDone": "Sync complete",
+        "syncFailed": "Sync failed",
+        "syncError": "Sync error",
+        "unknownSong": "알 수 없는 곡",
+        "unknownAlbum": "알 수 없는 앨범",
+        "unknownArtist": "알 수 없는 아티스트",
+        "unknown": "Unknown",
+        "enterCredentials": "Please enter username and password",
+        "loginFailed": "Login failed",
+        "networkError": "Network error. Cannot connect to server.",
+        "allFieldsRequired": "Please fill in all fields",
+        "userCreateSuccess": "User created",
+        "requestFailed": "Request failed",
+        "createSuccess": "Created",
+        "createFailed": "Create failed",
+        "enterPlaylistName": "Please enter a playlist name",
+        "addFailed": "Add failed",
+        "addedToPlaylist": "Added to \"{name}\"",
+        "passwordAllFields": "Please fill in all password fields",
+        "passwordMismatch": "The two new passwords do not match",
+        "passwordTooShort": "New password must be at least 4 characters",
+        "passwordChanged": "Password changed. Please log in again.",
+        "deleteFailed": "Delete failed. Please try again later.",
+        "weatherLoading": "Loading weather...",
+        "weatherFailed": "Weather unavailable",
+        "locationUnknown": "Location unavailable",
+        "fetchingWeather": "Fetching weather...",
+        "saveLocationFailed": "Network error. Save failed.",
+        "locationSaved": "Location saved: {location}",
+        "modeList": "현재: 목록 반복",
+        "modeSingle": "현재: 한 곡 반복",
+        "modeShuffle": "현재: 셔플"
+    }
+};
+let currentLang = localStorage.getItem(I18N_LANG_KEY) || "zh-CN";
+if (!I18N_LANGS.includes(currentLang)) currentLang = "zh-CN";
+
+function t(key, params = {}) {
+    const pack = I18N[currentLang] || I18N["zh-CN"];
+    let value = pack[key] ?? I18N["zh-CN"]?.[key] ?? I18N.en?.[key] ?? key;
+    return String(value).replace(/\{(\w+)\}/g, (_, name) => params[name] ?? "");
+}
+
+function setText(selector, key, params = {}) {
+    const el = document.querySelector(selector);
+    if (el) el.textContent = t(key, params);
+}
+
+function setAttr(selector, attr, key, params = {}) {
+    const el = document.querySelector(selector);
+    if (el) el.setAttribute(attr, t(key, params));
+}
+
+function applyI18n() {
+    document.documentElement.lang = currentLang;
+    document.querySelectorAll('#lang-select, #login-lang-select').forEach(sel => {
+        sel.value = currentLang;
+        sel.setAttribute('aria-label', t('language'));
+    });
+
+    setAttr('#username', 'placeholder', 'username');
+    setAttr('#password', 'placeholder', 'password');
+    setText('#login-btn', 'login');
+    setAttr('#mobile-menu-btn', 'title', 'menu');
+    setAttr('#user-avatar', 'alt', 'avatar');
+    setAttr('#hover-card-avatar', 'alt', 'avatar');
+    setText('#change-loc-btn', 'switch');
+    setAttr('#change-loc-btn', 'title', 'customWeather');
+    setText('#view-stats-btn', 'stats');
+    setAttr('#search-input', 'placeholder', 'searchPlaceholder');
+    setAttr('#profile-btn', 'title', 'profileCenter');
+    setAttr('#admin-panel-btn', 'title', 'adminPanel');
+    setText('#logout-btn', 'logout');
+    setText('#nav-favorites', 'favorites');
+    setText('#mobile-nav-favorites', 'favorites');
+    setText('#mobile-view-stats-btn', 'stats');
+    setText('#mobile-profile-btn', 'profileCenter');
+    setText('.meta-label', 'album');
+    if (!currentSongId) {
+        setText('#song-title', 'noSong');
+        setText('#song-album', 'exploreLibrary');
+        setText('#mobile-song-title', 'mobilePlayer');
+    }
+
+    setAttr('#sel-quality-desktop', 'title', 'qualityTitle');
+    setAttr('#btn-mode', 'title', MODES[currentModeIndex]?.titleKey || 'modeList');
+    setAttr('#player-fav-btn', 'title', 'favorite');
+    setAttr('#btn-prev', 'title', 'prev');
+    setAttr('#btn-next', 'title', 'next');
+
+    setText('#profile-modal h2', 'profileTitle');
+    const profileLabels = document.querySelectorAll('#profile-modal label');
+    if (profileLabels[0]) profileLabels[0].textContent = t('nickname');
+    if (profileLabels[1]) profileLabels[1].textContent = t('avatar');
+    if (profileLabels[2]) profileLabels[2].textContent = t('changePassword');
+    setAttr('#profile-nickname', 'placeholder', 'nickname');
+    setText('#profile-save-btn', 'save');
+    setAttr('#pwd-old', 'placeholder', 'oldPassword');
+    setAttr('#pwd-new', 'placeholder', 'newPassword');
+    setAttr('#pwd-confirm', 'placeholder', 'confirmPassword');
+    setText('#pwd-save-btn', 'changePassword');
+    setText('#profile-close-btn', 'close');
+
+    setText('#admin-modal h2', 'createUserTitle');
+    setAttr('#admin-username', 'placeholder', 'username');
+    setAttr('#admin-password', 'placeholder', 'password');
+    setAttr('#admin-nickname', 'placeholder', 'nickname');
+    const userOption = document.querySelector('#admin-role option[value="User"]');
+    const adminOption = document.querySelector('#admin-role option[value="Admin"]');
+    if (userOption) userOption.textContent = t('user');
+    if (adminOption) adminOption.textContent = t('admin');
+    setText('#admin-create-btn', 'createUser');
+    setText('#admin-close-btn', 'close');
+
+    setText('#playlist-create-modal h2', 'createPlaylistTitle');
+    setAttr('#new-playlist-name', 'placeholder', 'playlistName');
+    setText('#playlist-create-confirm', 'create');
+    setText('#playlist-create-close', 'cancel');
+    setText('#playlist-select-modal h2', 'selectPlaylistTitle');
+    setText('#playlist-select-close', 'cancel');
+    setText('#stats-modal h2', 'stats');
+    setText('#stats-close-btn', 'close');
+    setText('#location-select-modal h3', 'weatherLocationTitle');
+    setText('#confirm-loc-btn', 'confirm');
+    setText('#loc-modal-close-btn', 'cancel');
+
+    const locateBtn = document.getElementById('locate-current-btn');
+    if (locateBtn) {
+        locateBtn.textContent = t('locateCurrent');
+        locateBtn.title = t('locateCurrentTitle');
+    }
+}
+
+async function rerenderCurrentViewForLanguage() {
+    if (!playerPanel || playerPanel.style.display === "none") return;
+    if (currentViewContext.type === "folder") {
+        renderDirectory(currentViewContext.value || "root");
+    } else if (currentViewContext.type === "playlist" && currentViewContext.value) {
+        await renderPlaylist(currentViewContext.value);
+    } else if (currentViewContext.type === "favorites") {
+        navFavorites?.click();
+    }
+    updatePlayingRowHighlight(currentSongId, { scroll: false });
+}
+
+async function setLanguage(lang) {
+    if (!I18N_LANGS.includes(lang)) return;
+    currentLang = lang;
+    localStorage.setItem(I18N_LANG_KEY, lang);
+    applyI18n();
+    await rerenderCurrentViewForLanguage();
+}
+
+function bindLanguageSelector() {
+    document.querySelectorAll('#lang-select, #login-lang-select').forEach(sel => {
+        sel.value = currentLang;
+        sel.addEventListener('change', (e) => setLanguage(e.target.value));
+    });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    bindLanguageSelector();
+    applyI18n();
+});
+
 
 function serializePlaybackContext(context = currentViewContext) {
     if (!context) return { type: "folder", value: "root" };
@@ -460,13 +1112,13 @@ pwdSaveBtn.addEventListener("click", async () => {
     profileMsg.className = "msg-text";
 
     if (!oldPwd || !newPwd || !confirm) {
-        profileMsg.textContent = "请填写所有密码字段"; profileMsg.classList.add("error"); return;
+        profileMsg.textContent = t("passwordAllFields"); profileMsg.classList.add("error"); return;
     }
     if (newPwd !== confirm) {
-        profileMsg.textContent = "两次新密码不一致"; profileMsg.classList.add("error"); return;
+        profileMsg.textContent = t("passwordMismatch"); profileMsg.classList.add("error"); return;
     }
     if (newPwd.length < 4) {
-        profileMsg.textContent = "新密码至少 4 位"; profileMsg.classList.add("error"); return;
+        profileMsg.textContent = t("passwordTooShort"); profileMsg.classList.add("error"); return;
     }
     try {
         const resp = await fetch(`${API_BASE}/api/users/me/password`, {
@@ -479,7 +1131,7 @@ pwdSaveBtn.addEventListener("click", async () => {
             profileMsg.classList.add("error");
             return;
         }
-        profileMsg.textContent = "密码修改成功，请重新登录";
+        profileMsg.textContent = t("passwordChanged");
         profileMsg.classList.add("success");
         pwdOld.value = pwdNew.value = pwdConfirm.value = "";
         setTimeout(() => {
@@ -519,11 +1171,11 @@ adminCreateBtn.addEventListener("click", async () => {
             adminMsg.classList.add("error");
             return;
         }
-        adminMsg.textContent = "用户创建成功";
+        adminMsg.textContent = t("userCreateSuccess");
         adminMsg.classList.add("success");
         adminUsername.value = adminPassword.value = adminNickname.value = "";
         adminRole.value = "User";
-        showToast("用户创建成功");
+        showToast(t("userCreateSuccess"));
     } catch (e) { adminMsg.textContent = "请求失败"; adminMsg.classList.add("error"); }
 });
 
@@ -626,8 +1278,8 @@ function resetPlayerUI() {
     coverImg.src = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
     coverImg.classList.add("fallback-cover");
     coverImg.classList.remove("is-playing");
-    songTitle.textContent = "未播放任何内容";
-    songAlbum.textContent = "探索你的音乐库";
+    songTitle.textContent = t("noSong");
+    songAlbum.textContent = t("exploreLibrary");
     songAlbum.onclick = null;
     artistList.innerHTML = "";
     currentSongId = null;
@@ -666,7 +1318,7 @@ document.getElementById("login-btn").addEventListener("click", async () => {
     const password = document.getElementById("password").value.trim();
     loginError.textContent = "";
 
-    if (!username || !password) return loginError.textContent = "请输入用户名和密码";
+    if (!username || !password) return loginError.textContent = t("enterCredentials");
 
     try {
         const resp = await fetch(`${API_BASE}/api/auth/login`, {
@@ -675,12 +1327,12 @@ document.getElementById("login-btn").addEventListener("click", async () => {
         });
         if (!resp.ok) {
             const err = await resp.json().catch(() => ({}));
-            return loginError.textContent = err.detail || "登录失败";
+            return loginError.textContent = err.detail || t("loginFailed");
         }
         const data = await resp.json();
         setToken(data.access_token);
         await initPlayer();
-    } catch (e) { loginError.textContent = "网络错误，无法连接服务器"; }
+    } catch (e) { loginError.textContent = t("networkError"); }
 });
 
 /* ── Load library ──────────────────────────────────────────────── */
@@ -742,12 +1394,12 @@ function renderDirectory(folderName) {
         // ── My Playlists ──────────────────────────────────────────
         const plHeader = document.createElement("div");
         plHeader.className = "dir-header";
-        plHeader.textContent = "🎵 我的歌单";
+        plHeader.textContent = t("myPlaylists");
         centerList.appendChild(plHeader);
 
         const createBtn = document.createElement("button");
         createBtn.className = "folder-item";
-        createBtn.textContent = "➕ 新建歌单";
+        createBtn.textContent = t("newPlaylist");
         createBtn.addEventListener("click", () => openModal(document.getElementById("playlist-create-modal")));
         centerList.appendChild(createBtn);
 
@@ -794,7 +1446,7 @@ function renderDirectory(folderName) {
         // ── Folder buttons ───────────────────────────────────────
         const folderNames = Object.keys(libraryTree.folders).sort();
         if (folderNames.length) {
-            const header = document.createElement("div"); header.className = "dir-header"; header.textContent = "📁 文件夹"; centerList.appendChild(header);
+            const header = document.createElement("div"); header.className = "dir-header"; header.textContent = t("folders"); centerList.appendChild(header);
             folderNames.forEach(name => {
                 const btn = document.createElement("button"); btn.className = "folder-item"; btn.textContent = `📁 ${name}`;
                 btn.addEventListener("click", () => renderDirectory(name));
@@ -802,10 +1454,10 @@ function renderDirectory(folderName) {
             });
         }
         currentViewPlaylist = [...libraryTree.root];
-        const header = document.createElement("div"); header.className = "dir-header"; header.textContent = `🎵 根目录歌曲 (${currentViewPlaylist.length})`; centerList.appendChild(header);
+        const header = document.createElement("div"); header.className = "dir-header"; header.textContent = t("rootSongs", { count: currentViewPlaylist.length }); centerList.appendChild(header);
         currentViewPlaylist.forEach((song, idx) => centerList.appendChild(buildSongRow(song, idx)));
     } else {
-        const backBtn = document.createElement("button"); backBtn.className = "nav-back"; backBtn.textContent = "⬅️ 返回根目录";
+        const backBtn = document.createElement("button"); backBtn.className = "nav-back"; backBtn.textContent = t("backRoot");
         backBtn.addEventListener("click", () => renderDirectory("root")); centerNav.appendChild(backBtn);
 
         const songs = libraryTree.folders[folderName] || [];
@@ -830,7 +1482,7 @@ function buildSongRow(song, idx) {
 
     const titleDiv = document.createElement("div");
     titleDiv.className = "song-row-title";
-    titleDiv.textContent = song.Title || "未知歌曲";
+    titleDiv.textContent = song.Title || t("unknownSong");
 
     const artistDiv = document.createElement("div");
     artistDiv.className = "song-row-artist";
@@ -888,7 +1540,7 @@ function renderPlaylistSelectList() {
     if (!myPlaylists.length) {
         const empty = document.createElement("div");
         empty.className = "playlist-select-item";
-        empty.textContent = "暂无歌单，请先创建";
+        empty.textContent = t("noPlaylist");
         list.appendChild(empty);
         return;
     }
@@ -902,9 +1554,9 @@ function renderPlaylistSelectList() {
                     method: "POST", headers: authHeaders(),
                     body: JSON.stringify({ song_id: songIdToAdd }),
                 });
-                showToast(`已添加到「${pl.Name}」`);
+                showToast(t("addedToPlaylist", { name: pl.Name }));
                 closeModal(document.getElementById("playlist-select-modal"));
-            } catch (e) { showToast("添加失败", true); }
+            } catch (e) { showToast(t("addFailed"), true); }
         });
         list.appendChild(item);
     });
@@ -919,7 +1571,7 @@ async function renderPlaylist(playlist) {
 
     const backBtn = document.createElement("button");
     backBtn.className = "nav-back";
-    backBtn.textContent = "⬅️ 返回根目录";
+    backBtn.textContent = t("backRoot");
     backBtn.addEventListener("click", () => renderDirectory("root"));
     centerNav.appendChild(backBtn);
 
@@ -939,7 +1591,7 @@ async function renderPlaylist(playlist) {
         if (!songs.length) {
             const empty = document.createElement("div");
             empty.className = "center-empty";
-            empty.textContent = "歌单中暂无歌曲";
+            empty.textContent = t("emptyPlaylist");
             centerList.appendChild(empty);
         } else {
             songs.forEach((song, idx) => centerList.appendChild(buildSongRow(song, idx)));
@@ -982,7 +1634,7 @@ function filterAndRenderList(type, keyword) {
     header.textContent = `🔍 筛选结果: ${keyword} (${filtered.length})`; centerList.appendChild(header);
 
     if (filtered.length === 0) {
-        const empty = document.createElement("div"); empty.className = "center-empty"; empty.textContent = "没有匹配的歌曲"; centerList.appendChild(empty);
+        const empty = document.createElement("div"); empty.className = "center-empty"; empty.textContent = t("noMatch"); centerList.appendChild(empty);
     } else {
         filtered.forEach((song, idx) => centerList.appendChild(buildSongRow(song, idx)));
     }
@@ -1174,7 +1826,7 @@ async function playSong(song, options = {}) {
 
     currentSongId = song.SongID;
     if (save) saveLastPlayedSong(song);
-    songTitle.textContent = song.Title || "未知歌曲";
+    songTitle.textContent = song.Title || t("unknownSong");
 
     if (song.CoverPath) {
         coverImg.classList.remove("fallback-cover");
@@ -1185,7 +1837,7 @@ async function playSong(song, options = {}) {
         coverImg.src = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
     }
 
-    const albumName = song.Album || "未知专辑";
+    const albumName = song.Album || t("unknownAlbum");
     songAlbum.textContent = albumName;
     songAlbum.onclick = () => { if (song.Album) { searchInput.value=""; filterAndRenderList("album", song.Album); }};
 
@@ -1243,11 +1895,11 @@ async function playSong(song, options = {}) {
     // ── Media Session metadata (lock screen / system controls) ──
     if ("mediaSession" in navigator) {
         const artworkUrl = song.CoverPath ? API_BASE + song.CoverPath : "";
-        const artistStr = (song.Artists && song.Artists.length) ? song.Artists.join(", ") : "未知歌手";
+        const artistStr = (song.Artists && song.Artists.length) ? song.Artists.join(", ") : t("unknownArtist");
         navigator.mediaSession.metadata = new MediaMetadata({
-            title: song.Title || "未知歌曲",
+            title: song.Title || t("unknownSong"),
             artist: artistStr,
-            album: song.Album || "未知专辑",
+            album: song.Album || t("unknownAlbum"),
             artwork: [
                 { src: artworkUrl, sizes: "512x512", type: "image/jpeg" },
                 { src: artworkUrl, sizes: "512x512", type: "image/png" },
@@ -1300,7 +1952,7 @@ audioPlayer.addEventListener("pause", () => {
 btnMode.addEventListener("click", () => {
     currentModeIndex = (currentModeIndex + 1) % MODES.length;
     btnMode.textContent = MODES[currentModeIndex].icon;
-    btnMode.title = MODES[currentModeIndex].title;
+    btnMode.title = t(MODES[currentModeIndex].titleKey);
 });
 
 function playNext() {
@@ -1354,13 +2006,13 @@ navFavorites.addEventListener("click", async () => {
 
     const backBtn = document.createElement("button");
     backBtn.className = "nav-back";
-    backBtn.textContent = "⬅️ 返回所有歌曲";
+    backBtn.textContent = t("backAllSongs");
     backBtn.addEventListener("click", () => renderDirectory("root"));
     centerNav.appendChild(backBtn);
 
     const header = document.createElement("div");
     header.className = "dir-header";
-    header.textContent = "❤️ 我喜欢的音乐";
+    header.textContent = t("favorites");
     centerList.appendChild(header);
 
     try {
@@ -1373,7 +2025,7 @@ navFavorites.addEventListener("click", async () => {
         if (!songs.length) {
             const empty = document.createElement("div");
             empty.className = "center-empty";
-            empty.textContent = "还没有收藏歌曲";
+            empty.textContent = t("noFavorites");
             centerList.appendChild(empty);
         } else {
             songs.forEach((s, idx) => centerList.appendChild(buildSongRow(s, idx)));
@@ -1381,7 +2033,7 @@ navFavorites.addEventListener("click", async () => {
     } catch (e) {
         const err = document.createElement("div");
         err.className = "center-empty";
-        err.textContent = "加载失败";
+        err.textContent = t("loadFailed");
         centerList.appendChild(err);
     }
 });
@@ -1390,8 +2042,8 @@ navFavorites.addEventListener("click", async () => {
 const syncLibraryBtn = document.getElementById("nav-sync-library");
 if (syncLibraryBtn) {
     syncLibraryBtn.addEventListener("click", async () => {
-        const originalText = syncLibraryBtn.textContent;
-        syncLibraryBtn.textContent = "⏳ 正在同步...";
+        const originalText = syncLibraryBtn.textContent || t("newPlaylist");
+        syncLibraryBtn.textContent = t("syncing");
         syncLibraryBtn.style.pointerEvents = "none";
 
         try {
@@ -1401,10 +2053,10 @@ if (syncLibraryBtn) {
             });
 
             if (res.ok) {
-                syncLibraryBtn.textContent = "✅ 同步完成";
+                syncLibraryBtn.textContent = t("syncDone");
                 await loadLibrary();
             } else {
-                syncLibraryBtn.textContent = "❌ 同步失败";
+                syncLibraryBtn.textContent = t("syncFailed");
             }
         } catch (err) {
             console.error("同步曲库失败:", err);
@@ -1424,8 +2076,8 @@ if (syncLibraryBtn) {
     const locateBtn = document.createElement("button");
     locateBtn.id = "locate-current-btn";
     locateBtn.className = "folder-item";
-    locateBtn.textContent = "📍 定位当前播放";
-    locateBtn.title = "跳转到正在播放的歌曲";
+    locateBtn.textContent = t("locateCurrent");
+    locateBtn.title = t("locateCurrentTitle");
     // 注入到 menu-functional-area 内部，确保 Flex 布局将其作为中间滚动区的一部分
     const menuArea = leftPanel.querySelector('.menu-functional-area');
     if (menuArea) {

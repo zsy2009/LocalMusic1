@@ -1,4 +1,4 @@
-const CACHE_NAME = 'musiccloud-v6';
+const CACHE_NAME = 'musiccloud-v9';
 const ASSETS = [
     '/',
     '/index.html',
