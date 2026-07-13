@@ -25,12 +25,16 @@ _CONNECTION_STRING = (
     f"Server={_SERVER};"
     f"Database={_DATABASE};"
     f"Trusted_Connection=yes;"
+    f"Encrypt=no;"
+    f"TrustServerCertificate=yes;"
 )
 
 _SQLALCHEMY_URL = (
     "mssql+pyodbc://@localhost/MusicCloudDB?"
     "driver=ODBC+Driver+17+for+SQL+Server&"
-    "trusted_connection=yes"
+    "trusted_connection=yes&"
+    "Encrypt=no&"
+    "TrustServerCertificate=yes"
 )
 
 
@@ -72,7 +76,22 @@ def init_db():
         ("Users", "Province", "NVARCHAR(100) NULL"),
         ("Users", "City", "NVARCHAR(100) NULL"),
         ("Users", "District", "NVARCHAR(100) NULL"),
+        ("Users", "CountryAdcode", "NVARCHAR(20) NULL"),
+        ("Users", "ProvinceAdcode", "NVARCHAR(20) NULL"),
+        ("Users", "CityAdcode", "NVARCHAR(20) NULL"),
+        ("Users", "DistrictAdcode", "NVARCHAR(20) NULL"),
+        ("Users", "LocationAdcode", "NVARCHAR(20) NULL"),
+        ("Users", "LocationName", "NVARCHAR(100) NULL"),
+        ("Users", "LocationLevel", "NVARCHAR(20) NULL"),
+        ("Users", "LocationCenter", "NVARCHAR(50) NULL"),
+        ("Users", "LocationSource", "NVARCHAR(20) NULL"),
+        ("Users", "LocationCountryCode", "NVARCHAR(10) NULL"),
+        ("Users", "LocationGeonameID", "NVARCHAR(30) NULL"),
+        ("Users", "LocationLatitude", "FLOAT NULL"),
+        ("Users", "LocationLongitude", "FLOAT NULL"),
+        ("Users", "LocationTimezone", "NVARCHAR(100) NULL"),
         ("Users", "LastSongID", "INT NULL"),
+        ("Users", "VisualizerEnabled", "BIT NOT NULL DEFAULT 1"),
     ]
     for table, col, col_type in migration_columns:
         cursor.execute(f"""

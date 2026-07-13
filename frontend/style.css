@@ -1,8 +1,8 @@
-/* ── Reset & base ──────────────────────────────────────────────── */
+﻿/* 鈹€鈹€ Reset & base 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
 :root {
-    --bottom-offset: 0px; /* 移动端底部地址栏抬高补偿，默认无额外偏移 */
+    --bottom-offset: 0px; /* 绉诲姩绔簳閮ㄥ湴鍧€鏍忔姮楂樿ˉ鍋匡紝榛樿鏃犻澶栧亸绉?*/
 }
 
 body {
@@ -13,18 +13,18 @@ body {
     height: 100vh;
 }
 
-/* ── Login Panel ──────────────────────────────────────────────── */
+/* 鈹€鈹€ Login Panel 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
 #login-panel { display: flex; align-items: center; justify-content: center; width: 100%; height: 100vh; }
 .login-card { background: rgba(26,26,26,0.8); backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 48px 40px; width: 380px; display: flex; flex-direction: column; gap: 18px; box-shadow: 0 8px 32px rgba(0,0,0,.5); }
 .login-card h1 { text-align: center; font-size: 28px; margin-bottom: 10px; color: #fff; }
 .login-card input { padding: 12px 16px; border-radius: 10px; border: 1px solid #333; background: rgba(0,0,0,0.5); color: #e0e0e0; font-size: 15px; outline: none; transition: border .2s; }
 .login-card input:focus { border-color: #1ed760; box-shadow: 0 0 8px rgba(30,215,96,0.2); }
 .btn-primary { padding: 12px; border-radius: 10px; border: none; background: #1ed760; color: #000; font-size: 16px; font-weight: 600; cursor: pointer; transition: all .2s; }
-.btn-primary:hover { background: #1fdf64; transform: translateY(-2px); box-shadow: 0 4px 15px rgba(30,215,96,0.3); }
-.btn-primary:active { transform: scale(.97); }
-.error-msg { color: #f44; font-size: 14px; text-align: center; min-height: 20px; }
+.btn-primary:hover { background: #1fdf64; box-shadow: 0 4px 15px rgba(30,215,96,0.3); }
+.btn-primary:active { transform: none; }
+.error-msg { color: #f44; font-size: 14px; text-align: center; min-height: 20px; white-space: pre-line; line-height: 1.55; }
 
-/* ── Main Content (3-column Glassmorphism) ────────────────────── */
+/* 鈹€鈹€ Main Content (3-column Glassmorphism) 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
 #main-content {
     display: flex;
     height: calc(100vh - 90px);
@@ -40,7 +40,7 @@ body {
     box-shadow: 0 4px 24px rgba(0,0,0,0.2);
 }
 
-/* ── Left Panel ───────────────────────────────────────────────── */
+/* 鈹€鈹€ Left Panel 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
 #left-panel { width: 320px; flex-shrink: 0; padding: 30px 20px; display: flex; flex-direction: column; align-items: center; gap: 20px; overflow-y: auto; z-index: 100; overflow: visible !important; }
 .cover-container { position: relative; width: 240px; height: 240px; }
 #cover-img { width: 100%; height: 100%; object-fit: cover; border-radius: 16px; background: #1a1a1a; box-shadow: 0 8px 24px rgba(0,0,0,.6); transition: all 0.5s ease; }
@@ -48,20 +48,20 @@ body {
 #cover-img.is-playing { transform: scale(1.02); box-shadow: 0 10px 30px rgba(30,215,96,0.3); border: 1px solid rgba(30,215,96,0.2); }
 #left-panel h2 { font-size: 22px; color: #fff; text-align: center; word-break: break-word; font-weight: 700; transition: opacity 0.3s; }
 
-/* ── Idle placeholder state ──────────────────── */
+/* 鈹€鈹€ Idle placeholder state 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
 .idle-state #song-title { opacity: 0.5; font-style: italic; font-size: 18px; }
 .idle-state #song-album { opacity: 0.4; font-style: italic; cursor: default !important; }
 .idle-state #cover-img { opacity: 0.3; }
 .idle-state #album-area .meta-label { opacity: 0.3; }
 
-/* ── Tags & Buttons ───────────────────────────────────────────── */
+/* 鈹€鈹€ Tags & Buttons 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
 #artist-list { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
 .artist-pill, .clickable-tag { padding: 6px 16px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: #ccc; font-size: 13px; cursor: pointer; transition: all .2s ease; max-width: 240px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.artist-pill:hover, .clickable-tag:hover { border-color: #1ed760; color: #1ed760; background: rgba(30,215,96,.1); transform: translateY(-1px); }
+.artist-pill:hover, .clickable-tag:hover { border-color: #1ed760; color: #1ed760; background: rgba(30,215,96,.1); }
 #album-area { display: flex; flex-direction: column; align-items: center; gap: 8px; margin-top: 10px;}
 .meta-label { font-size: 11px; color: #777; text-transform: uppercase; letter-spacing: 1px; }
 
-/* ── Center Panel ─────────────────────────────────────────────── */
+/* 鈹€鈹€ Center Panel 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
 #center-panel {
     flex: 1; min-width: 400px; overflow-x: hidden; display: flex; flex-direction: column;
     padding: 20px; padding-bottom: 120px !important;
@@ -91,14 +91,14 @@ body {
 .dir-header:first-child { padding-top: 0; }
 
 .folder-item { display: block; width: 100%; padding: 12px 16px; margin-bottom: 4px; border-radius: 8px; border: none; background: transparent; color: #aaa; font-size: 14px; cursor: pointer; text-align: left; transition: all .2s ease; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.folder-item:hover { background: rgba(255,255,255,0.05); color: #fff; padding-left: 20px; }
+.folder-item:hover { background: rgba(255,255,255,0.05); color: #fff; }
 
 .song-item { display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 8px 16px; margin-bottom: 4px; border-radius: 8px; border: none; background: transparent; color: #aaa; font-size: 14px; transition: all .2s ease; }
 .song-item:hover { background: rgba(255,255,255,0.05); color: #fff; }
 .song-item.playing { color: #1ed760; font-weight: 600; border-left: 3px solid #1ed760; border-radius: 4px 8px 8px 4px; animation: playingPulse 2.5s infinite ease-in-out; }
 .song-item.playing .song-info::before { display: none !important; }
 .song-item.playing .song-row-title { color: #1ed760; font-weight: 600; }
-.song-item.playing .song-row-title::before { content: '🎵 '; font-size: 12px; animation: blink 1s infinite alternate ease-in-out; }
+.song-item.playing .song-row-title::before { content: '\1F3B5 '; font-size: 12px; animation: blink 1s infinite alternate ease-in-out; }
 .song-info { flex: 1; cursor: pointer; display: flex; flex-direction: column; justify-content: center; gap: 3px; overflow: hidden; }
 .song-row-title { color: #e0e0e0; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: color 0.2s; }
 .song-row-artist { color: #888; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -110,28 +110,28 @@ body {
 .favorite-btn:hover { background: rgba(255,255,255,0.1); }
 #player-fav-btn { font-size: 24px; margin-right: 20px; }
 
-.song-actions { display: flex; align-items: center; gap: 5px; opacity: 0; transform: translateX(10px); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); pointer-events: none; }
-.song-item:hover .song-actions { opacity: 1; transform: translateX(0); pointer-events: auto; }
-.song-actions:has(.is-fav) { opacity: 1; transform: translateX(0); pointer-events: auto; }
+.song-actions { display: flex; align-items: center; gap: 5px; opacity: 0; transition: opacity 0.2s ease; pointer-events: none; }
+.song-item:hover .song-actions { opacity: 1; pointer-events: auto; }
+.song-actions:has(.is-fav) { opacity: 1; pointer-events: auto; }
 .song-item:not(:hover) .song-actions:has(.is-fav) .add-to-playlist-btn { opacity: 0; pointer-events: none; display: none; }
 .playlist-select-item { padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer; color: #ccc; transition: background 0.2s; }
 .playlist-select-item:hover { background: rgba(30,215,96,.1); color: #1ed760; }
 .center-empty { padding: 32px; text-align: center; color: #666; font-size: 14px; }
 
-/* ── Panel resizer ─────────────────────────────────────────────── */
+/* 鈹€鈹€ Panel resizer 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
 .resizer { width: 6px; cursor: col-resize; background-color: transparent; transition: background-color 0.2s; z-index: 10; }
 .resizer:hover, .resizer.active { background-color: #1ed760; }
 
-/* ── Right Panel (Lyrics) ─────────────────────────────────────── */
+/* 鈹€鈹€ Right Panel (Lyrics) 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
 #right-panel { width: 400px; min-width: 300px; flex-shrink: 0; overflow-x: hidden; display: flex; flex-direction: column; }
 #lyrics-container { flex: 1; overflow-y: auto; padding: 24px 16px; padding-bottom: 120px !important; contain: layout paint; }
 #lyrics-container::-webkit-scrollbar { display: none; }
 #lyrics-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
 #lyrics-list li { padding: 8px 12px; border-radius: 8px; color: rgba(255,255,255,0.3); font-size: 15px; transition: color 0.18s ease, opacity 0.18s ease, transform 0.18s ease; cursor: pointer; line-height: 1.5; transform-origin: left center;}
-#lyrics-list li:hover { color: #1ed760 !important; transform: scale(1.05); opacity: 1 !important; }
+#lyrics-list li:hover { color: #1ed760 !important; transform: none; opacity: 1 !important; }
 #lyrics-list li.active-lyric { color: #fff; font-weight: bold; transform: scale(1.08); text-shadow: 0 2px 8px rgba(255,255,255,.18); }
 
-/* ── 核心重构：Player Bar 全局防挤压控制栏 ────────────────────── */
+/* 鈹€鈹€ 鏍稿績閲嶆瀯锛歅layer Bar 鍏ㄥ眬闃叉尋鍘嬫帶鍒舵爮 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
 #player-bar {
     position: fixed; bottom: 0; left: 0; width: 100%; height: 90px;
     background: rgba(10,10,10,0.85); backdrop-filter: blur(20px);
@@ -141,7 +141,7 @@ body {
 }
 .custom-controls {
     display: flex; align-items: center; gap: 20px;
-    flex-shrink: 0 !important; /* 核心防缩：确保左侧按钮不被压扁 */
+    flex-shrink: 0 !important; /* 鏍稿績闃茬缉锛氱‘淇濆乏渚ф寜閽笉琚帇鎵?*/
 }
 .custom-controls button {
     background: transparent; border: none; color: #aaa;
@@ -150,25 +150,29 @@ body {
     display: flex; align-items: center; justify-content: center;
 }
 .custom-controls button:hover {
-    color: #fff; background: rgba(255,255,255,0.1); transform: scale(1.1);
+    color: #fff; background: rgba(255,255,255,0.1);
 }
+.visualizer-toggle-btn { border: 1px solid rgba(255,255,255,0.14) !important; font-size: 18px !important; }
+.visualizer-toggle-btn.is-on { color: #1ed760; background: rgba(30,215,96,0.12); border-color: rgba(30,215,96,0.38) !important; }
+.visualizer-toggle-btn.is-off { color: #666; background: rgba(255,255,255,0.04); }
 #btn-mode { font-size: 18px; }
 #audio-player {
     display: block !important;
-    flex: 1 1 auto !important; /* 核心弹性：霸占中间所有空间 */
+    flex: 1 1 auto !important; /* 鏍稿績寮规€э細闇稿崰涓棿鎵€鏈夌┖闂?*/
     width: 100% !important;
     max-width: 800px !important;
-    min-width: 300px !important; /* 终极防线：绝对不允许宽度小于300 */
+    min-width: 300px !important; /* 缁堟瀬闃茬嚎锛氱粷瀵逛笉鍏佽瀹藉害灏忎簬300 */
     height: 54px !important;
     margin: 0 20px !important;
     filter: invert(0.9) hue-rotate(180deg);
     opacity: 0.9;
 }
 
-/* ── Visualizer canvas ────────────────────────────────────────── */
+/* 鈹€鈹€ Visualizer canvas 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
 #visualizer-canvas { position: fixed; bottom: 90px; left: 0; width: 100%; height: 120px; z-index: 999; pointer-events: none; opacity: 0.72; }
+#visualizer-canvas.visualizer-disabled { display: none !important; }
 
-/* ── User Profile Bar & Hover Card ────────────────────────────── */
+/* 鈹€鈹€ User Profile Bar & Hover Card 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
 #user-profile-bar {
     position: sticky !important;
     top: 0 !important;
@@ -189,19 +193,19 @@ body {
 
 #user-hover-card {
     position: absolute; top: calc(100% + 15px); left: 20px;
-    width: 280px; /* 原为 220px，此处加宽以适应长文本在一行内显示 */
+    width: 280px; /* 鍘熶负 220px锛屾澶勫姞瀹戒互閫傚簲闀挎枃鏈湪涓€琛屽唴鏄剧ず */
     padding: 20px;
     display: flex; flex-direction: column; align-items: center; border-radius: 16px;
     background: rgba(20, 20, 20, 0.85); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 15px 35px rgba(0,0,0,0.6); opacity: 0; visibility: hidden;
-    transform-origin: top left; transform: translateY(-20px) scale(0.85);
+    transform-origin: top left; transform: translateY(-20px);
     transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), visibility 0.3s; z-index: 9999;
 }
 #user-hover-card::before { content: ''; position: absolute; top: -20px; left: 0; width: 100%; height: 20px; }
-#user-profile-trigger:hover #user-hover-card { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+#user-profile-trigger:hover #user-hover-card { opacity: 1; visibility: visible; transform: translateY(0); }
 #hover-card-avatar { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin-bottom: 10px; border: 2px solid #1ed760; }
 
-/* ── Modals & Forms ────────────────────────────────────────────── */
+/* 鈹€鈹€ Modals & Forms 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
 .modal { display: none; position: fixed; z-index: 1000; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); align-items: center; justify-content: center; }
 .modal.show { display: flex; }
 .modal-card { background: rgba(26,26,26,0.9); backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 32px 28px; width: 420px; max-width: 90vw; display: flex; flex-direction: column; gap: 12px; box-shadow: 0 16px 48px rgba(0,0,0,.6); animation: modalIn 0.25s ease; }
@@ -218,6 +222,10 @@ body {
 .btn-sm { padding: 8px 16px; font-size: 14px; white-space: nowrap; }
 .btn-secondary { padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: transparent; color: #aaa; font-size: 14px; cursor: pointer; transition: all .2s; }
 .btn-secondary:hover { border-color: #fff; color: #fff; }
+
+.btn-danger { padding: 8px 16px; border-radius: 8px; border: 1px solid rgba(255,90,90,0.45); background: rgba(220,53,69,0.88); color: #fff; font-size: 14px; cursor: pointer; transition: all .2s; white-space: nowrap; }
+.btn-danger:hover { background: #e54858; border-color: rgba(255,130,130,0.75); }
+.btn-danger:disabled { opacity: 0.55; cursor: not-allowed; }
 .msg-text { font-size: 13px; text-align: center; min-height: 18px; }
 .msg-text.success { color: #1ed760; }
 .msg-text.error { color: #f44; }
@@ -234,20 +242,20 @@ body {
     50% { background: rgba(30, 215, 96, 0.15); border-left-color: #1ed760; box-shadow: inset 4px 0 15px rgba(30, 215, 96, 0.15); }
     100% { background: rgba(30, 215, 96, 0.05); border-left-color: rgba(30, 215, 96, 0.3); box-shadow: inset 0 0 0 rgba(30, 215, 96, 0); }
 }
-@keyframes blink { 0% { opacity: 0.4; transform: scale(0.9); } 100% { opacity: 1; transform: scale(1.1); } }
+@keyframes blink { 0% { opacity: 0.4; transform: scale(0.9); } 100% { opacity: 1; transform: none; } }
 
 .playlist-item-container { display: flex; justify-content: space-between; align-items: center; padding: 0; }
 .playlist-name-span { flex: 1; padding: 12px; cursor: pointer; }
 .delete-playlist-btn { background: transparent; border: none; color: #aaa; font-size: 16px; cursor: pointer; padding: 0 16px; transition: color 0.2s; }
 .delete-playlist-btn:hover { color: #e74c3c; }
 
-/* ── Stats ranking bars ─────────────────────────────────────────── */
+/* 鈹€鈹€ Stats ranking bars 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
 .rank-item { margin-bottom: 15px; position: relative; }
 .rank-info { display: flex; justify-content: space-between; margin-bottom: 5px; font-size: 14px; }
 .rank-bar-bg { height: 6px; background: rgba(255, 255, 255, 0.1); border-radius: 3px; overflow: hidden; }
 .rank-bar-fill { height: 100%; background: #1ed760; width: 0%; transition: width 1s ease-out; }
 
-/* ── 音质选择器双轨样式（全局）────────────────────────────────── */
+/* 鈹€鈹€ 闊宠川閫夋嫨鍣ㄥ弻杞ㄦ牱寮忥紙鍏ㄥ眬锛夆攢鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
 .quality-selector {
     background: rgba(255, 255, 255, 0.06);
     border: 1px solid rgba(255, 255, 255, 0.15);
@@ -265,15 +273,15 @@ body {
 .mobile-quality-wrapper .quality-selector { margin-right: 0; }
 .hide-on-pc { display: none !important; }
 
-/* ═══════════════════════════════════════════════════════════════════
-   📱 移动端专属布局 (<= 768px)
-   ═══════════════════════════════════════════════════════════════════ */
+/* 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺?
+   馃摫 绉诲姩绔笓灞炲竷灞€ (<= 768px)
+   鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺?*/
 @media screen and (max-width: 768px) {
-    /* ─────────────────────────────────────────────────────────────────
-     * 移动端严格四区块 Flex 布局修复
-     * ──────────────────────────────────────────────────────────────── */
+    /* 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+     * 绉诲姩绔弗鏍煎洓鍖哄潡 Flex 甯冨眬淇
+     * 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
 
-    /* 1. 彻底冻结根容器 (修复：仅在非隐藏状态下强制 Flex，防止盖住登录界面) */
+    /* 1. 褰诲簳鍐荤粨鏍瑰鍣?(淇锛氫粎鍦ㄩ潪闅愯棌鐘舵€佷笅寮哄埗 Flex锛岄槻姝㈢洊浣忕櫥褰曠晫闈? */
     #player-panel:not([style*="display: none"]) {
         position: fixed !important;
         top: 0 !important;
@@ -285,44 +293,44 @@ body {
         overflow: hidden !important;
     }
 
-    /* 1. 隐藏PC端大屏组件 */
+    /* 1. 闅愯棌PC绔ぇ灞忕粍浠?*/
     #mobile-menu-btn { display: flex !important; }
     #right-panel, #panel-resizer { display: none !important; }
     .hide-on-mobile { display: none !important; }
     .hide-on-pc { display: flex !important; }
 
-    /* 1. 中间内容区：作为相对定位基准，其自身尺寸已被外层 Flex 完美卡在顶部和底部之间 */
+    /* 1. 涓棿鍐呭鍖猴細浣滀负鐩稿瀹氫綅鍩哄噯锛屽叾鑷韩灏哄宸茶澶栧眰 Flex 瀹岀編鍗″湪椤堕儴鍜屽簳閮ㄤ箣闂?*/
     #main-content {
-        position: relative !important; /* 核心：成为菜单绝对定位的参照物 */
+        position: relative !important; /* 鏍稿績锛氭垚涓鸿彍鍗曠粷瀵瑰畾浣嶇殑鍙傜収鐗?*/
         flex: 1 1 auto !important;
         min-height: 0 !important;
         height: auto !important;
         padding: 0 !important;
         overflow: hidden !important; 
     }
-    /* 移除硬编码边距，高度跟随父级 Flex 自动计算 */
+    /* 绉婚櫎纭紪鐮佽竟璺濓紝楂樺害璺熼殢鐖剁骇 Flex 鑷姩璁＄畻 */
     #center-panel {
         min-width: 0; flex: 1 0 auto;
         padding: 0 8px 10px 8px !important;
         height: 100% !important;
         overflow-y: visible;
     }
-    /* ─────────────────────────────────────────────────────────────────
-     * 移动端侧边抽屉：绝对定位附加在 main-content 内部，永不越界
-     * ───────────────────────────────────────────────────────────────── */
+    /* 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+     * 绉诲姩绔晶杈规娊灞夛細缁濆瀹氫綅闄勫姞鍦?main-content 鍐呴儴锛屾案涓嶈秺鐣?
+     * 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
     #left-panel {
-        position: absolute !important; /* 脱离原本位置，但在 #main-content 范围内 */
+        position: absolute !important; /* 鑴辩鍘熸湰浣嶇疆锛屼絾鍦?#main-content 鑼冨洿鍐?*/
         top: 0 !important;
         bottom: 0 !important;
         left: -100%;
-        height: 100% !important;       /* 高度 100% 等同于 #main-content 的高度 */
+        height: 100% !important;       /* 楂樺害 100% 绛夊悓浜?#main-content 鐨勯珮搴?*/
         max-height: 100% !important;
         width: 80%;
         max-width: 320px;
         z-index: 1100;
         display: flex !important;
         flex-direction: column !important;
-        padding: 20px 16px !important; /* 顶部不再需要 80px 的避让距 */
+        padding: 20px 16px !important; /* 椤堕儴涓嶅啀闇€瑕?80px 鐨勯伩璁╄窛 */
         overflow: hidden !important;
         background: #121212 !important;
         border-right: 1px solid #333 !important;
@@ -331,14 +339,14 @@ body {
 
     #left-panel.active { left: 0 !important; }
 
-    /* 菜单内元素排序与沉底逻辑 */
+    /* 鑿滃崟鍐呭厓绱犳帓搴忎笌娌夊簳閫昏緫 */
     #left-panel .cover-container { order: 1; flex-shrink: 0; margin-bottom: 5px !important; }
     #left-panel #song-title    { order: 2; flex-shrink: 0; }
     #left-panel h2             { margin-bottom: 5px !important; }
     #left-panel #artist-list   { order: 3; flex-shrink: 0; }
     #left-panel #album-area    { order: 4; flex-shrink: 0; margin-top: 5px !important; margin-bottom: 10px !important; }
 
-    /* 中间功能区 — 唯一允许滚动的区域 */
+    /* 涓棿鍔熻兘鍖?鈥?鍞竴鍏佽婊氬姩鐨勫尯鍩?*/
     #left-panel .menu-functional-area {
         order: 5;
         flex: 1 1 auto !important;
@@ -346,7 +354,7 @@ body {
         min-height: 100px !important;
     }
 
-    /* 音质选择区 (强制沉底) */
+    /* 闊宠川閫夋嫨鍖?(寮哄埗娌夊簳) */
     #left-panel .mobile-quality-wrapper {
         order: 6 !important;
         flex-shrink: 0 !important;
@@ -355,7 +363,7 @@ body {
         border-top: 1px solid #333;
     }
 
-    /* 侧边栏按钮紧凑化 */
+    /* 渚ц竟鏍忔寜閽揣鍑戝寲 */
     #left-panel .folder-item {
         padding: 8px 12px !important;
         margin-bottom: 2px !important;
@@ -367,7 +375,7 @@ body {
     .mobile-view { display: none; width: 100%; height: 100% !important; overflow-y: auto; -webkit-overflow-scrolling: touch; padding-bottom: 0 !important; }
     .mobile-view.active { display: block !important; }
 
-    /* 2.5 搜索栏折行到第二行，占满全宽 */
+    /* 2.5 鎼滅储鏍忔姌琛屽埌绗簩琛岋紝鍗犳弧鍏ㄥ */
     #search-container {
         width: 100% !important;
         max-width: 100% !important;
@@ -375,7 +383,7 @@ body {
         order: 99 !important;
         margin-top: 4px !important;
     }
-    /* 3. 尺寸缩紧 */
+    /* 3. 灏哄缂╃揣 */
     .cover-container { width: 80px; height: 80px; }
     #cover-img { width: 80px; height: 80px; border-radius: 10px; }
     #left-panel h2 { font-size: 16px; }
@@ -383,7 +391,7 @@ body {
     .artist-pill { font-size: 11px; padding: 4px 10px; }
     .modal-card { width: 95vw; max-width: 95vw; padding: 24px 16px; }
     #location-select-modal .modal-card > div { flex-direction: column; gap: 8px; }
-    /* 1. 顶部区域：自然排列，禁止压缩，取消 sticky 避免脱离文档流 */
+    /* 1. 椤堕儴鍖哄煙锛氳嚜鐒舵帓鍒楋紝绂佹鍘嬬缉锛屽彇娑?sticky 閬垮厤鑴辩鏂囨。娴?*/
     #user-profile-bar {
         position: relative !important;
         top: 0 !important;
@@ -394,16 +402,16 @@ body {
     #user-hover-card { left: 0; width: 200px; }
     #logout-btn { font-size: 11px; padding: 4px 10px; }
 
-    /* 4. A105 性能降级与底部 Tab 栏 */
+    /* 4. A105 鎬ц兘闄嶇骇涓庡簳閮?Tab 鏍?*/
     * { backdrop-filter: none !important; box-shadow: none !important; transition: none !important; animation: none !important; }
-    /* 彻底让封面的放大呼吸动效失效 */
+    /* 褰诲簳璁╁皝闈㈢殑鏀惧ぇ鍛煎惛鍔ㄦ晥澶辨晥 */
     #cover-img.is-playing,
     #mobile-cover-img.is-playing {
         transform: none !important;
         border: none !important;
         box-shadow: none !important;
     }
-    /* 4. 底部导航：回归文档流，紧贴底部 */
+    /* 4. 搴曢儴瀵艰埅锛氬洖褰掓枃妗ｆ祦锛岀揣璐村簳閮?*/
     #mobile-tab-bar {
         position: relative !important;
         bottom: auto !important;
@@ -418,7 +426,7 @@ body {
     .tab-item { flex: 1; display: flex; justify-content: center; align-items: center; color: #666; font-size: 14px; cursor: pointer; }
     .tab-item.active { color: #1ed760; font-weight: bold; }
 
-    /* 3. 底部播放条：回归文档流，自然占据所需高度，禁止压缩 */
+    /* 3. 搴曢儴鎾斁鏉★細鍥炲綊鏂囨。娴侊紝鑷劧鍗犳嵁鎵€闇€楂樺害锛岀姝㈠帇缂?*/
     #player-bar {
         position: relative !important;
         bottom: auto !important;
@@ -455,7 +463,7 @@ body {
     #visualizer-canvas { display: none !important; }
 
 
-    /* 8. 优化移动端播放界面：压缩封面标题，释放歌词空间，剥离动效 */
+    /* 8. 浼樺寲绉诲姩绔挱鏀剧晫闈細鍘嬬缉灏侀潰鏍囬锛岄噴鏀炬瓕璇嶇┖闂达紝鍓ョ鍔ㄦ晥 */
     #view-player .cover-container {
         width: 140px !important;
         height: 140px !important;
@@ -471,21 +479,21 @@ body {
         margin-bottom: 12px !important;
     }
 
-    /* 彻底关闭外层滚动，避免与歌词容器的滚动发生冲突 */
-    /* 避让底部的导航栏和播放条 (根据截图预估高度，如不精准可在此处微调数值) */
+    /* 褰诲簳鍏抽棴澶栧眰婊氬姩锛岄伩鍏嶄笌姝岃瘝瀹瑰櫒鐨勬粴鍔ㄥ彂鐢熷啿绐?*/
+    /* 閬胯搴曢儴鐨勫鑸爮鍜屾挱鏀炬潯 (鏍规嵁鎴浘棰勪及楂樺害锛屽涓嶇簿鍑嗗彲鍦ㄦ澶勫井璋冩暟鍊? */
     #view-player > div {
         overflow-y: hidden !important;
         padding-bottom: calc(160px + var(--bottom-offset, 0px)) !important;
         box-sizing: border-box;
     }
 
-    /* 整合并替换原有的 #mobile-lyrics-container 样式 */
+    /* 鏁村悎骞舵浛鎹㈠師鏈夌殑 #mobile-lyrics-container 鏍峰紡 */
     #mobile-lyrics-container {
         flex: 1 1 auto !important;
-        height: 0 !important; /* 强制触发 flex 容器内部正确计算高度的关键 */
+        height: 0 !important; /* 寮哄埗瑙﹀彂 flex 瀹瑰櫒鍐呴儴姝ｇ‘璁＄畻楂樺害鐨勫叧閿?*/
         width: 100% !important;
         margin-top: 10px !important;
-        padding-bottom: 0 !important; /* 剥离旧版错误的硬编码留白，交由外层统一控制 */
+        padding-bottom: 0 !important; /* 鍓ョ鏃х増閿欒鐨勭‖缂栫爜鐣欑櫧锛屼氦鐢卞灞傜粺涓€鎺у埗 */
         overflow-y: auto !important;
         scroll-behavior: auto !important;
         scrollbar-width: none;
@@ -509,7 +517,7 @@ body {
 
     #mobile-lyrics-list {
         gap: 2px !important;
-        padding-bottom: 50vh !important; /* 在列表底部强行增加占位，允许最后一行歌词继续向上滚动半个屏幕 */
+        padding-bottom: 50vh !important; /* 鍦ㄥ垪琛ㄥ簳閮ㄥ己琛屽鍔犲崰浣嶏紝鍏佽鏈€鍚庝竴琛屾瓕璇嶇户缁悜涓婃粴鍔ㄥ崐涓睆骞?*/
     }
     #mobile-lyrics-list li {
         padding: 4px 10px !important;
@@ -517,11 +525,11 @@ body {
         pointer-events: auto !important;
     }
 
-    /* ═══════════════════════════════════════════════════════════════
-     * 移动端四区块 Flex 布局强化 (最终覆盖层)
-     * ═══════════════════════════════════════════════════════════════ */
+    /* 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺?
+     * 绉诲姩绔洓鍖哄潡 Flex 甯冨眬寮哄寲 (鏈€缁堣鐩栧眰)
+     * 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺?*/
 
-    /* 1. 确保最外层容器成为全屏 Flex 容器 */
+    /* 1. 纭繚鏈€澶栧眰瀹瑰櫒鎴愪负鍏ㄥ睆 Flex 瀹瑰櫒 */
     #player-panel {
         display: flex !important;
         flex-direction: column !important;
@@ -530,13 +538,13 @@ body {
         overflow: hidden !important;
     }
 
-    /* 2. 移除顶部导航栏的 fixed 定位，使其自然布局 */
+    /* 2. 绉婚櫎椤堕儴瀵艰埅鏍忕殑 fixed 瀹氫綅锛屼娇鍏惰嚜鐒跺竷灞€ */
     #user-profile-bar {
         position: relative !important;
         flex-shrink: 0 !important;
     }
 
-    /* 3. 中间内容区：flex: 1 自动占满所有可用空间 */
+    /* 3. 涓棿鍐呭鍖猴細flex: 1 鑷姩鍗犳弧鎵€鏈夊彲鐢ㄧ┖闂?*/
     #main-content {
         flex: 1 1 auto !important;
         min-height: 0 !important;
@@ -545,7 +553,7 @@ body {
         -webkit-overflow-scrolling: touch;
     }
 
-    /* 4. 底部播放条：回归文档流，自然停靠在上方 */
+    /* 4. 搴曢儴鎾斁鏉★細鍥炲綊鏂囨。娴侊紝鑷劧鍋滈潬鍦ㄤ笂鏂?*/
     #player-bar {
         position: relative !important;
         flex-shrink: 0 !important;
@@ -554,28 +562,28 @@ body {
         padding: 10px 15px !important;
     }
 
-    /* 5. 底部标签栏：紧贴最底部 */
+    /* 5. 搴曢儴鏍囩鏍忥細绱ц创鏈€搴曢儴 */
     #mobile-tab-bar {
         position: relative !important;
         flex-shrink: 0 !important;
         border-top: 1px solid #222 !important;
     }
 
-    /* 6. 移除之前错误的硬编码边距，防止内容被遮挡 */
+    /* 6. 绉婚櫎涔嬪墠閿欒鐨勭‖缂栫爜杈硅窛锛岄槻姝㈠唴瀹硅閬尅 */
     #center-panel {
         padding-bottom: 0 !important;
     }
 
-    /* ─────────────────────────────────────────────────────────────────
-     * 移动端侧边菜单：内部元素对齐微调
-     * ──────────────────────────────────────────────────────────────── */
+    /* 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+     * 绉诲姩绔晶杈硅彍鍗曪細鍐呴儴鍏冪礌瀵归綈寰皟
+     * 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
 
-    /* 1. 修复封面偏左：强制交叉轴居中 */
+    /* 1. 淇灏侀潰鍋忓乏锛氬己鍒朵氦鍙夎酱灞呬腑 */
     #left-panel {
         align-items: center !important;
     }
 
-    /* 2. 封面与文本区域的绝对居中强化 */
+    /* 2. 灏侀潰涓庢枃鏈尯鍩熺殑缁濆灞呬腑寮哄寲 */
     #left-panel .cover-container {
         margin: 0 auto 10px auto !important;
     }
@@ -589,20 +597,20 @@ body {
         width: 100% !important;
     }
 
-    /* 3. 中间功能区：撑满全宽，防止内容挤压 */
+    /* 3. 涓棿鍔熻兘鍖猴細鎾戞弧鍏ㄥ锛岄槻姝㈠唴瀹规尋鍘?*/
     #left-panel .menu-functional-area {
         width: 100% !important;
     }
 
-    /* 4. 音质选择区：撑满全宽，并强制沉底贴边 */
+    /* 4. 闊宠川閫夋嫨鍖猴細鎾戞弧鍏ㄥ锛屽苟寮哄埗娌夊簳璐磋竟 */
     #left-panel .mobile-quality-wrapper {
         width: 100% !important;
-        margin-top: auto !important; /* 吸收所有垂直剩余空间，强制推至最底 */
+        margin-top: auto !important; /* 鍚告敹鎵€鏈夊瀭鐩村墿浣欑┖闂达紝寮哄埗鎺ㄨ嚦鏈€搴?*/
         margin-bottom: 0 !important;
         box-sizing: border-box !important;
     }
 
-    /* 5. 地址栏防遮挡设置：沉底，紧贴音质选择区下方 */
+    /* 5. 鍦板潃鏍忛槻閬尅璁剧疆锛氭矇搴曪紝绱ц创闊宠川閫夋嫨鍖轰笅鏂?*/
     #left-panel #address-bar-settings {
         order: 7 !important;
         flex-shrink: 0 !important;
@@ -610,46 +618,46 @@ body {
         box-sizing: border-box !important;
     }
 
-    /* 6. 移动端地址栏防遮挡：绝对底边锚定法 — 播放条骑在导航栏上方，共用 --bottom-offset 同步升降 */
+    /* 6. 绉诲姩绔湴鍧€鏍忛槻閬尅锛氱粷瀵瑰簳杈归敋瀹氭硶 鈥?鎾斁鏉￠獞鍦ㄥ鑸爮涓婃柟锛屽叡鐢?--bottom-offset 鍚屾鍗囬檷 */
     #mobile-tab-bar {
         position: fixed !important;
-        bottom: 0 !important;                                    /* 彻底钉死在屏幕最底边 */
+        bottom: 0 !important;                                    /* 褰诲簳閽夋鍦ㄥ睆骞曟渶搴曡竟 */
         width: 100% !important;
         z-index: 1000 !important;
-        padding-bottom: var(--bottom-offset, 0px) !important;   /* 内边距将内容顶起，背景向下延伸填补 */
-        background-color: #050505 !important;                   /* 极暗纯黑，与播放条形成色差 */
-        border-top: 1px solid #333 !important;                  /* 焊死视觉分界线 */
+        padding-bottom: var(--bottom-offset, 0px) !important;   /* 鍐呰竟璺濆皢鍐呭椤惰捣锛岃儗鏅悜涓嬪欢浼稿～琛?*/
+        background-color: #050505 !important;                   /* 鏋佹殫绾粦锛屼笌鎾斁鏉″舰鎴愯壊宸?*/
+        border-top: 1px solid #333 !important;                  /* 鐒婃瑙嗚鍒嗙晫绾?*/
     }
     #player-bar {
         position: fixed !important;
         width: 100% !important;
         z-index: 999 !important;
-        bottom: calc(50px + var(--bottom-offset, 0px)) !important; /* 骑在导航栏原始高度(50px) + 偏移量之上 */
-        background-color: #1a1a1a !important;                      /* 稍亮深灰，与导航栏 #050505 清晰区分 */
-        border-bottom: 1px solid #000 !important;                  /* 底部黑线，彻底划清与导航栏的界限 */
-        transform: none !important;                                 /* 废除任何 transform 干扰 */
+        bottom: calc(50px + var(--bottom-offset, 0px)) !important; /* 楠戝湪瀵艰埅鏍忓師濮嬮珮搴?50px) + 鍋忕Щ閲忎箣涓?*/
+        background-color: #1a1a1a !important;                      /* 绋嶄寒娣辩伆锛屼笌瀵艰埅鏍?#050505 娓呮櫚鍖哄垎 */
+        border-bottom: 1px solid #000 !important;                  /* 搴曢儴榛戠嚎锛屽交搴曞垝娓呬笌瀵艰埅鏍忕殑鐣岄檺 */
+        transform: none !important;                                 /* 搴熼櫎浠讳綍 transform 骞叉壈 */
     }
 }
 
-/* ═══════════════════════════════════════════════════════════════════
-   💻 桌面端专属布局 (> 768px)
-   ═══════════════════════════════════════════════════════════════════ */
+/* 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺?
+   馃捇 妗岄潰绔笓灞炲竷灞€ (> 768px)
+   鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺?*/
 @media screen and (min-width: 769px) {
-    /* 1. 斩断手机端的专属影子结构 */
+    /* 1. 鏂╂柇鎵嬫満绔殑涓撳睘褰卞瓙缁撴瀯 */
     #view-player, #view-user, #mobile-tab-bar { display: none !important; }
     #view-library { display: contents !important; }
 
-    /* 2. 玻璃拟态恢复 */
+    /* 2. 鐜荤拑鎷熸€佹仮澶?*/
     .glass-panel {
         backdrop-filter: blur(12px) !important;
         box-shadow: 0 4px 24px rgba(0,0,0,0.2) !important;
     }
 
-    /* ─────────────────────────────────────────────────────────────────
-     * PC端严格三段式 Flex 布局修复 (消除中间区域溢出)
-     * ──────────────────────────────────────────────────────────────── */
+    /* 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+     * PC绔弗鏍间笁娈靛紡 Flex 甯冨眬淇 (娑堥櫎涓棿鍖哄煙婧㈠嚭)
+     * 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
 
-    /* 3. 外层容器接管：全局 Flex Column，无视 JS 的 inline display 干扰 */
+    /* 3. 澶栧眰瀹瑰櫒鎺ョ锛氬叏灞€ Flex Column锛屾棤瑙?JS 鐨?inline display 骞叉壈 */
     #player-panel:not([style*="display: none"]) {
         display: flex !important;
         flex-direction: column !important;
@@ -657,66 +665,66 @@ body {
         overflow: hidden !important;
     }
 
-    /* 4. 顶部导航栏：禁止压缩，取消 sticky 避免高度计算丢失 */
+    /* 4. 椤堕儴瀵艰埅鏍忥細绂佹鍘嬬缉锛屽彇娑?sticky 閬垮厤楂樺害璁＄畻涓㈠け */
     #user-profile-bar {
         position: relative !important;
         flex-shrink: 0 !important;
         top: auto !important;
     }
 
-    /* 5. 中间内容区：利用 flex: 1 动态占位，彻底废除 calc() 硬计算 */
+    /* 5. 涓棿鍐呭鍖猴細鍒╃敤 flex: 1 鍔ㄦ€佸崰浣嶏紝褰诲簳搴熼櫎 calc() 纭绠?*/
     #main-content {
         flex: 1 1 auto !important;
         height: auto !important;
-        min-height: 0 !important; /* 必须显式声明为0，允许内部组件独立拦截滚动 */
+        min-height: 0 !important; /* 蹇呴』鏄惧紡澹版槑涓?锛屽厑璁稿唴閮ㄧ粍浠剁嫭绔嬫嫤鎴粴鍔?*/
     }
 
-    /* 6. 底部播放条：回归正常文档流，作为 Flex 尾部元素自然停靠 */
+    /* 6. 搴曢儴鎾斁鏉★細鍥炲綊姝ｅ父鏂囨。娴侊紝浣滀负 Flex 灏鹃儴鍏冪礌鑷劧鍋滈潬 */
     #player-bar {
         position: relative !important;
         flex-shrink: 0 !important;
         bottom: auto !important;
     }
 
-    /* 7. 清理旧版冗余的"魔法边距"与局部溢出 Bug */
+    /* 7. 娓呯悊鏃х増鍐椾綑鐨?榄旀硶杈硅窛"涓庡眬閮ㄦ孩鍑?Bug */
     #left-panel {
-        overflow-y: auto !important; /* 清除原全局 overflow: visible 导致的内容越界 */
+        overflow-y: auto !important; /* 娓呴櫎鍘熷叏灞€ overflow: visible 瀵艰嚧鐨勫唴瀹硅秺鐣?*/
     }
-    /* 强制左侧面板的所有子元素保持原始尺寸，高度不足时触发内建滚动条，禁止被压缩截断 */
+    /* 寮哄埗宸︿晶闈㈡澘鐨勬墍鏈夊瓙鍏冪礌淇濇寔鍘熷灏哄锛岄珮搴︿笉瓒虫椂瑙﹀彂鍐呭缓婊氬姩鏉★紝绂佹琚帇缂╂埅鏂?*/
     #left-panel > * {
         flex-shrink: 0 !important;
     }
     #center-panel {
-        padding-bottom: 20px !important; /* 剥离原有的 120px 底部填充 */
+        padding-bottom: 20px !important; /* 鍓ョ鍘熸湁鐨?120px 搴曢儴濉厖 */
         overflow-y: auto !important;
     }
     #center-list {
         overflow-y: visible !important;
     }
     #lyrics-container {
-        padding-bottom: 24px !important; /* 剥离原有的 120px 底部填充 */
+        padding-bottom: 24px !important; /* 鍓ョ鍘熸湁鐨?120px 搴曢儴濉厖 */
     }
 
-    /* ─────────────────────────────────────────────────────────────────
-     * PC端左侧面板视觉优化：放大封面、标题与歌手的排版间距
-     * ──────────────────────────────────────────────────────────────── */
+    /* 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+     * PC绔乏渚ч潰鏉胯瑙変紭鍖栵細鏀惧ぇ灏侀潰銆佹爣棰樹笌姝屾墜鐨勬帓鐗堥棿璺?
+     * 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
 
-    /* 1. 撑开封面与标题之间的距离 */
+    /* 1. 鎾戝紑灏侀潰涓庢爣棰樹箣闂寸殑璺濈 */
     #left-panel .cover-container {
         margin-bottom: 30px !important;
     }
 
-    /* 2. 撑开标题与下方歌手标签之间的距离 */
+    /* 2. 鎾戝紑鏍囬涓庝笅鏂规瓕鎵嬫爣绛句箣闂寸殑璺濈 */
     #left-panel #song-title {
         margin-bottom: 15px !important;
     }
 
-    /* 3. 撑开歌手标签与下方专辑/功能区之间的距离 */
+    /* 3. 鎾戝紑姝屾墜鏍囩涓庝笅鏂逛笓杈?鍔熻兘鍖轰箣闂寸殑璺濈 */
     #left-panel #artist-list {
         margin-bottom: 30px !important;
     }
 
-    /* 4. 封面绝对居中防御 */
+    /* 4. 灏侀潰缁濆灞呬腑闃插尽 */
     #left-panel {
         align-items: center !important;
     }
@@ -770,3 +778,480 @@ body {
         max-width: 86px;
     }
 }
+
+
+.custom-asset-btn { background: transparent; border: none; color: #aaa; font-size: 17px; cursor: pointer; padding: 4px 8px; border-radius: 4px; transition: all 0.2s; flex-shrink: 0; }
+.custom-asset-btn:hover { color: #1ed760; background: rgba(255,255,255,0.1); }
+.custom-asset-card { max-height: 90vh; overflow-y: auto; }
+.custom-asset-song-title { color: #aaa; font-size: 13px; text-align: center; margin-top: -4px; margin-bottom: 4px; word-break: break-all; }
+.field-hint { color: #888; font-size: 12px; line-height: 1.45; margin: -4px 0 2px; }
+.modal-card textarea { padding: 10px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.5); color: #e0e0e0; font-size: 14px; outline: none; resize: vertical; min-height: 150px; font-family: inherit; line-height: 1.5; }
+.modal-card textarea:focus { border-color: #1ed760; box-shadow: 0 0 8px rgba(30,215,96,0.15); }
+.custom-asset-actions { align-items: center; }
+
+
+.lyrics-empty-notice { color: #cfcfcf; line-height: 1.7; padding: 18px 20px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; list-style: none; white-space: normal; }
+.lyrics-empty-notice strong { display: block; color: #fff; font-size: 16px; margin-bottom: 10px; }
+.lyrics-empty-notice p { margin: 8px 0; color: #aaa; }
+.lyrics-empty-notice ol { margin: 8px 0 8px 20px; padding: 0; }
+.lyrics-empty-notice ol li { list-style: decimal; margin: 6px 0; color: #cfcfcf; }
+.lyrics-empty-notice-footer { color: #1ed760 !important; margin-top: 12px !important; }
+
+/* Support ticket UI */
+.ticket-card { width: min(1180px, 94vw); max-width: 1180px; max-height: 92vh; overflow-y: auto; text-align: left; }
+.ticket-modal-header { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:12px; }
+.ticket-modal-header h2 { margin:0; color:#1ed760; }
+.ticket-grid { display:grid; grid-template-columns: 0.9fr 1fr 1.4fr; gap:14px; align-items:start; }
+.ticket-section { background: rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:14px; padding:14px; min-height:160px; }
+.ticket-section h3 { margin:0 0 10px; color:#fff; font-size:16px; }
+.ticket-list { display:flex; flex-direction:column; gap:8px; max-height:56vh; overflow-y:auto; }
+.ticket-list-item { width:100%; border:1px solid rgba(255,255,255,0.08); border-radius:10px; background:rgba(0,0,0,0.22); color:#ddd; padding:10px; cursor:pointer; text-align:left; transition:0.18s ease; }
+.ticket-list-item:hover, .ticket-list-item.active { border-color:#1ed760; background:rgba(30,215,96,0.10); }
+.ticket-list-row { display:flex; justify-content:space-between; align-items:flex-start; gap:8px; }
+.ticket-list-row strong { word-break:break-word; line-height:1.35; }
+.ticket-list-meta, .ticket-meta { display:flex; flex-wrap:wrap; gap:8px 12px; color:#999; font-size:12px; margin-top:7px; }
+.ticket-detail-head { display:flex; justify-content:space-between; align-items:flex-start; gap:10px; margin-bottom:6px; }
+.ticket-detail-head h3 { word-break:break-word; }
+.ticket-status { display:inline-flex; align-items:center; white-space:nowrap; border-radius:999px; padding:3px 9px; font-size:12px; color:#fff; background:#666; }
+.ticket-status.status-pending { background:#607d8b; }
+.ticket-status.status-in_progress { background:#f39c12; }
+.ticket-status.status-resolved { background:#1e9f55; }
+.ticket-status.status-rejected { background:#c0392b; }
+.ticket-messages { display:flex; flex-direction:column; gap:12px; max-height:44vh; overflow-y:auto; margin:12px 0; padding-right:4px; }
+.ticket-message { border-radius:12px; padding:12px; border:1px solid rgba(255,255,255,0.08); background:rgba(255,255,255,0.04); }
+.ticket-message.admin { border-color:rgba(30,215,96,0.35); background:rgba(30,215,96,0.08); }
+.ticket-message-head { display:flex; flex-wrap:wrap; gap:8px 12px; align-items:center; color:#aaa; font-size:12px; margin-bottom:8px; }
+.ticket-message-head strong { color:#fff; font-size:13px; }
+.ticket-result { color:#1ed760; border:1px solid rgba(30,215,96,0.35); border-radius:999px; padding:2px 8px; }
+.ticket-message-body { color:#e6e6e6; line-height:1.6; word-break:break-word; }
+.ticket-message-body h3, .ticket-message-body h4, .ticket-message-body h5 { margin:8px 0 4px; color:#fff; }
+.ticket-message-body code { background:rgba(0,0,0,0.35); padding:1px 4px; border-radius:4px; color:#9ee6b5; }
+.ticket-message-body a { color:#1ed760; }
+.ticket-attachments { display:grid; grid-template-columns:repeat(auto-fill, minmax(140px, 1fr)); gap:8px; margin-top:10px; }
+.ticket-attachment { display:flex; flex-direction:column; gap:6px; border:1px solid rgba(255,255,255,0.1); border-radius:10px; padding:8px; color:#ddd; text-decoration:none; background:rgba(0,0,0,0.22); font-size:12px; word-break:break-all; }
+.ticket-attachment img, .ticket-attachment video { width:100%; max-height:150px; object-fit:cover; border-radius:8px; background:#111; }
+.ticket-attachment audio { width:100%; }
+.ticket-reply-box { border-top:1px solid rgba(255,255,255,0.08); padding-top:12px; }
+.ticket-admin-result-row { align-items:center; gap:10px; margin:8px 0; color:#ddd; }
+.ticket-admin-result-row select { flex:1; padding:8px 10px; border-radius:8px; border:1px solid rgba(255,255,255,0.1); background:#151515; color:#fff; }
+.ticket-empty { color:#999; padding:18px 10px; text-align:center; }
+.ticket-empty.error { color:#ff7f7f; }
+.lyrics-contact-ticket-btn { margin-left:4px; border:0; border-radius:999px; padding:4px 10px; background:#1ed760; color:#06140b; cursor:pointer; font-weight:700; }
+.lyrics-contact-ticket-btn:hover { filter:brightness(1.08); }
+
+@media (max-width: 980px) {
+    .ticket-grid { grid-template-columns: 1fr; }
+    .ticket-list, .ticket-messages { max-height:none; }
+    .ticket-card { width:94vw; }
+}
+
+/* Support ticket modal height and polish overrides */
+.ticket-card {
+    width: min(1220px, 96vw) !important;
+    height: min(700px, 78vh) !important;
+    max-height: 78vh !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+    padding: 18px !important;
+    border: 1px solid rgba(255,255,255,0.14) !important;
+    background: linear-gradient(145deg, rgba(24,24,24,0.98), rgba(10,10,10,0.96)) !important;
+}
+
+.ticket-modal-header {
+    flex: 0 0 auto !important;
+    padding-bottom: 12px !important;
+    margin-bottom: 14px !important;
+    border-bottom: 1px solid rgba(255,255,255,0.08) !important;
+}
+
+.ticket-title-block h2 { margin: 0 !important; color: #1ed760 !important; }
+.ticket-title-block p { margin: 4px 0 0; color: #8d8d8d; font-size: 12px; line-height: 1.45; }
+.ticket-header-actions { display: flex; align-items: center; gap: 8px; }
+.ticket-icon-btn { width: 34px; height: 34px; border: 1px solid rgba(255,255,255,0.12); border-radius: 50%; background: rgba(255,255,255,0.06); color: #ddd; cursor: pointer; font-size: 22px; line-height: 1; transition: 0.18s ease; }
+.ticket-icon-btn:hover { color: #fff; border-color: rgba(231,76,60,0.65); background: rgba(231,76,60,0.18); }
+
+.ticket-grid {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+    grid-template-columns: minmax(230px, 0.82fr) minmax(250px, 1fr) minmax(360px, 1.45fr) !important;
+    align-items: stretch !important;
+}
+
+.ticket-section {
+    min-height: 0 !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+    background: rgba(255,255,255,0.035) !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.04) !important;
+}
+
+.ticket-section h3 { flex: 0 0 auto; display: flex; align-items: center; gap: 6px; }
+#ticket-create-section { overflow-y: auto !important; }
+#ticket-create-section input[type="text"],
+#ticket-create-section textarea,
+.ticket-reply-box textarea {
+    width: 100%;
+    box-sizing: border-box;
+}
+#ticket-body-input { min-height: 132px !important; }
+#ticket-reply-body { min-height: 92px !important; }
+
+.ticket-list-section { min-width: 0; }
+.ticket-list {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow-y: auto !important;
+    padding-right: 4px;
+}
+.ticket-list-item { border-radius: 12px !important; }
+.ticket-list-item.active { box-shadow: 0 0 0 1px rgba(30,215,96,0.35), 0 10px 24px rgba(0,0,0,0.24); }
+.ticket-list-row strong { color: #f0f0f0; }
+.ticket-list-meta { opacity: 0.9; }
+
+.ticket-detail-section { min-width: 0; }
+#ticket-detail {
+    height: 100%;
+    min-height: 0;
+    flex-direction: column;
+    overflow: hidden;
+}
+#ticket-detail[style*="display: block"] { display: flex !important; }
+.ticket-detail-head { flex: 0 0 auto; padding-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+.ticket-detail-head h3 { margin: 0 !important; font-size: 17px; line-height: 1.35; }
+.ticket-meta { flex: 0 0 auto; margin: 8px 0 0 !important; }
+.ticket-messages {
+    flex: 1 1 auto !important;
+    min-height: 96px !important;
+    max-height: none !important;
+    overflow-y: auto !important;
+    margin: 12px 0 !important;
+    padding: 0 6px 0 0 !important;
+    scroll-behavior: smooth;
+}
+.ticket-message { box-shadow: 0 8px 20px rgba(0,0,0,0.18); }
+.ticket-message.user { background: rgba(255,255,255,0.045); }
+.ticket-message.admin { background: linear-gradient(135deg, rgba(30,215,96,0.11), rgba(30,215,96,0.045)); }
+.ticket-reply-box {
+    flex: 0 0 auto !important;
+    max-height: min(220px, 28vh) !important;
+    overflow-y: auto !important;
+    margin-top: 0 !important;
+    padding-top: 12px !important;
+    background: linear-gradient(180deg, rgba(18,18,18,0.94), rgba(18,18,18,0.98));
+    border-top: 1px solid rgba(255,255,255,0.10) !important;
+}
+.ticket-form-actions { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 8px; }
+.ticket-shortcut-hint { color: #777; font-size: 12px; white-space: nowrap; }
+.ticket-form-actions .btn-primary { min-width: 108px; }
+.ticket-selected-files { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }
+.ticket-selected-files.empty { display: none; }
+.ticket-selected-files-summary { color: #b6eec7; font-size: 12px; }
+.ticket-selected-file-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 7px 9px; border: 1px solid rgba(255,255,255,0.10); border-radius: 8px; background: rgba(255,255,255,0.045); color: #ddd; font-size: 12px; word-break: break-all; }
+.ticket-selected-file-remove { flex: 0 0 auto; border: 1px solid rgba(255,255,255,0.18); border-radius: 999px; padding: 3px 8px; background: transparent; color: #f0f0f0; cursor: pointer; }
+.ticket-selected-file-remove:hover { border-color: #ff7b7b; color: #ff9a9a; }
+
+
+.ticket-attachments { grid-template-columns: repeat(auto-fill, minmax(128px, 1fr)) !important; }
+.ticket-attachment.error { border-color: rgba(231,76,60,0.45); color: #ff9a9a; }
+.ticket-attachment em { color: #ff9a9a; font-style: normal; font-size: 12px; }
+
+.ticket-list::-webkit-scrollbar,
+.ticket-messages::-webkit-scrollbar,
+.ticket-reply-box::-webkit-scrollbar,
+#ticket-create-section::-webkit-scrollbar { width: 8px; }
+.ticket-list::-webkit-scrollbar-thumb,
+.ticket-messages::-webkit-scrollbar-thumb,
+.ticket-reply-box::-webkit-scrollbar-thumb,
+#ticket-create-section::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.16); border-radius: 999px; }
+.ticket-list::-webkit-scrollbar-thumb:hover,
+.ticket-messages::-webkit-scrollbar-thumb:hover,
+.ticket-reply-box::-webkit-scrollbar-thumb:hover,
+#ticket-create-section::-webkit-scrollbar-thumb:hover { background: rgba(30,215,96,0.38); }
+
+@media (max-width: 980px) {
+    .ticket-card { height: min(760px, 84vh) !important; width: 96vw !important; padding: 14px !important; }
+    .ticket-modal-header { align-items: flex-start !important; }
+    .ticket-grid { grid-template-columns: 1fr !important; overflow-y: auto !important; padding-right: 4px; }
+    .ticket-section { min-height: auto !important; overflow: visible !important; }
+    .ticket-list { max-height: 240px !important; }
+    #ticket-detail { height: auto; max-height: none; overflow: visible; }
+    #ticket-detail[style*="display: block"] { display: block !important; }
+    .ticket-messages { max-height: 360px !important; }
+    .ticket-reply-box { max-height: none !important; }
+}
+
+@media (max-width: 560px) {
+    .ticket-card { height: 86vh !important; max-height: 86vh !important; border-radius: 14px !important; }
+    .ticket-title-block p, .ticket-shortcut-hint { display: none; }
+    .ticket-header-actions { gap: 6px; }
+    .ticket-form-actions { justify-content: flex-end; }
+    .ticket-detail-head { flex-direction: column; }
+}
+
+/* Keep ticket messages readable; let the message area scroll instead of shrinking cards. */
+.ticket-message { flex: 0 0 auto !important; }
+
+/* Be tolerant of browser/HTML spacing differences in inline display style. */
+#ticket-detail[style*="display:block"] { display: flex !important; }
+
+
+/* More compact support ticket modal height. */
+.ticket-card {
+    height: min(700px, 78vh) !important;
+    max-height: 78vh !important;
+}
+.ticket-reply-box {
+    max-height: min(220px, 28vh) !important;
+}
+@media (max-width: 980px) {
+    .ticket-card { height: min(760px, 84vh) !important; max-height: 84vh !important; }
+}
+@media (max-width: 560px) {
+    .ticket-card { height: 86vh !important; max-height: 86vh !important; }
+}
+
+
+/* Jinyiwei admin user management */
+.admin-card { width: 760px; max-width: 94vw; max-height: 72vh; overflow-y: auto; padding-top: 22px; padding-bottom: 22px; }
+.admin-section { display: flex; flex-direction: column; gap: 8px; padding: 12px; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; background: rgba(255,255,255,0.03); }
+.admin-section h3 { margin: 0; color: #fff; font-size: 15px; }
+.admin-section-header { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.admin-note { margin: 0; color: #aaa; font-size: 12px; line-height: 1.55; }
+.admin-user-list { display: flex; flex-direction: column; gap: 8px; max-height: 220px; overflow: auto; padding-right: 2px; }
+.admin-user-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 10px 12px; border-radius: 10px; background: rgba(0,0,0,0.28); border: 1px solid rgba(255,255,255,0.07); }
+.admin-user-title { color: #fff; font-weight: 600; font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.admin-user-meta { color: #aaa; font-size: 12px; margin-top: 4px; }
+.admin-user-actions { display: flex; align-items: center; gap: 8px; }
+.admin-reset-password-input { width: 150px; }
+.admin-password-locked { color: #f5c56b; font-size: 12px; white-space: nowrap; }
+.admin-empty { color: #aaa; font-size: 13px; text-align: center; padding: 14px; }
+.admin-empty.error { color: #f44; }
+.admin-reset-password-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+
+@media (max-width: 720px) {
+    .admin-user-row { grid-template-columns: 1fr; }
+    .admin-user-actions { width: 100%; }
+    .admin-reset-password-input { flex: 1; width: auto; min-width: 0; }
+}
+
+
+/* Announcement system */
+.announcement-card { width: min(1220px, 94vw) !important; }
+.announcement-grid { grid-template-columns: 1fr 1fr 1.45fr; }
+.announcement-checkbox-row { display:flex; align-items:center; gap:8px; color:#ddd; font-size:13px; margin: 2px 0; }
+.announcement-checkbox-row input { width:auto; }
+.announcement-list-item { width:100%; border:1px solid rgba(255,255,255,0.08); border-radius:12px; background:rgba(0,0,0,0.22); color:#ddd; padding:11px; cursor:pointer; text-align:left; transition:0.18s ease; }
+.announcement-list-item:hover, .announcement-list-item.active { border-color:#1ed760; background:rgba(30,215,96,0.10); }
+.announcement-list-item.pinned { border-color:rgba(30,215,96,0.28); }
+.announcement-list-row strong { display:block; color:#f0f0f0; line-height:1.4; word-break:break-word; }
+.announcement-list-meta { display:flex; flex-wrap:wrap; gap:8px 12px; color:#999; font-size:12px; margin-top:7px; }
+.announcement-pin-badge { display:inline-flex; align-items:center; margin-right:6px; padding:1px 7px; border-radius:999px; color:#111; background:#1ed760; font-size:11px; font-weight:700; vertical-align:1px; }
+.announcement-detail-head { align-items:center; }
+.announcement-admin-actions { display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end; }
+.announcement-detail-body { margin-top:12px; padding:14px; border-radius:12px; background:rgba(255,255,255,0.045); border:1px solid rgba(255,255,255,0.08); color:#e6e6e6; line-height:1.7; word-break:break-word; max-height:42vh; overflow:auto; }
+.announcement-detail-body h3, .announcement-detail-body h4, .announcement-detail-body h5 { margin:10px 0 6px; color:#fff; }
+.announcement-detail-body code { background:rgba(0,0,0,0.35); padding:1px 4px; border-radius:4px; color:#9ee6b5; }
+.announcement-detail-body a { color:#1ed760; }
+.announcement-detail-files { margin-top:10px; }
+.danger-btn { border-color:rgba(231,76,60,0.45) !important; color:#ffb0b0 !important; }
+.danger-btn:hover { background:rgba(231,76,60,0.18) !important; border-color:rgba(231,76,60,0.75) !important; }
+.announcement-detail-body::-webkit-scrollbar,
+.announcement-list::-webkit-scrollbar { width: 8px; }
+.announcement-detail-body::-webkit-scrollbar-thumb,
+.announcement-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.16); border-radius: 999px; }
+.announcement-detail-body::-webkit-scrollbar-thumb:hover,
+.announcement-list::-webkit-scrollbar-thumb:hover { background: rgba(30,215,96,0.38); }
+
+@media (max-width: 980px) {
+    .announcement-grid { grid-template-columns: 1fr !important; }
+    .announcement-detail-body { max-height: 360px; }
+}
+
+@media (max-width: 560px) {
+    .announcement-admin-actions { justify-content:flex-start; }
+}
+
+.announcement-card.announcement-user-mode .announcement-create-section { display: none !important; }
+.announcement-card.announcement-user-mode .announcement-grid { grid-template-columns: 1fr 1.45fr; }
+@media (max-width: 980px) {
+    .announcement-card.announcement-user-mode .announcement-grid { grid-template-columns: 1fr !important; }
+}
+
+.announcement-create-section[hidden],
+.announcement-card.announcement-user-mode .announcement-create-section,
+#announcement-create-section[hidden] {
+    display: none !important;
+}
+
+
+/* Ordinary-user announcement reading layout: 3:7 split */
+.announcement-card.announcement-user-mode {
+    width: min(1120px, 94vw) !important;
+    height: min(680px, 78vh) !important;
+    max-height: 78vh !important;
+    padding: 20px !important;
+    overflow: hidden !important;
+}
+.announcement-card.announcement-user-mode .ticket-modal-header {
+    padding: 2px 2px 14px;
+    margin-bottom: 14px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.announcement-card.announcement-user-mode .ticket-title-block h2 {
+    letter-spacing: 0.02em;
+}
+.announcement-card.announcement-user-mode .ticket-title-block p {
+    margin-top: 6px;
+    color: #a9a9a9;
+}
+.announcement-card.announcement-user-mode .announcement-grid {
+    display: grid;
+    grid-template-columns: minmax(240px, 3fr) minmax(0, 7fr) !important;
+    gap: 18px;
+    height: calc(100% - 88px);
+    min-height: 0;
+    align-items: stretch;
+}
+.announcement-card.announcement-user-mode .announcement-list-section,
+.announcement-card.announcement-user-mode .announcement-detail-section {
+    min-height: 0 !important;
+    height: 100%;
+    overflow: hidden !important;
+    border-radius: 18px;
+}
+.announcement-card.announcement-user-mode .announcement-list-section {
+    padding: 14px;
+    background: linear-gradient(180deg, rgba(30,215,96,0.09), rgba(255,255,255,0.035));
+    border-color: rgba(30,215,96,0.18);
+}
+.announcement-card.announcement-user-mode .announcement-detail-section {
+    padding: 18px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.065), rgba(255,255,255,0.028));
+    border-color: rgba(255,255,255,0.11);
+}
+.announcement-card.announcement-user-mode .announcement-list-section h3,
+.announcement-card.announcement-user-mode .announcement-detail-section h3 {
+    font-size: 17px;
+}
+.announcement-card.announcement-user-mode .announcement-list {
+    max-height: none !important;
+    height: calc(100% - 34px);
+    padding-right: 4px;
+    gap: 10px;
+}
+.announcement-card.announcement-user-mode .announcement-list-item {
+    padding: 13px 14px;
+    border-radius: 14px;
+    background: rgba(0,0,0,0.24);
+    box-shadow: 0 8px 18px rgba(0,0,0,0.16);
+}
+.announcement-card.announcement-user-mode .announcement-list-item:hover,
+.announcement-card.announcement-user-mode .announcement-list-item.active {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 24px rgba(0,0,0,0.24), 0 0 0 1px rgba(30,215,96,0.22);
+}
+.announcement-card.announcement-user-mode .announcement-list-row strong {
+    font-size: 14px;
+}
+.announcement-card.announcement-user-mode .announcement-list-meta {
+    line-height: 1.45;
+}
+.announcement-card.announcement-user-mode #announcement-detail,
+.announcement-card.announcement-user-mode #announcement-detail[style*="display: block"] {
+    height: 100%;
+    display: flex !important;
+    flex-direction: column;
+    min-height: 0;
+}
+.announcement-card.announcement-user-mode .announcement-detail-head {
+    flex: 0 0 auto;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.announcement-card.announcement-user-mode #announcement-detail-title {
+    font-size: 22px;
+    line-height: 1.35;
+}
+.announcement-card.announcement-user-mode #announcement-detail-meta {
+    flex: 0 0 auto;
+    margin: 10px 0 0;
+}
+.announcement-card.announcement-user-mode .announcement-detail-body {
+    flex: 1 1 auto;
+    max-height: none !important;
+    margin-top: 14px;
+    padding: 18px 20px;
+    border-radius: 16px;
+    background: rgba(0,0,0,0.20);
+    overflow: auto;
+}
+.announcement-card.announcement-user-mode .announcement-detail-files {
+    flex: 0 0 auto;
+}
+.announcement-card.announcement-user-mode #announcement-detail-empty {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px dashed rgba(255,255,255,0.16);
+    border-radius: 16px;
+    background: rgba(0,0,0,0.16);
+    color: #bdbdbd;
+}
+.announcement-card.announcement-user-mode #announcement-close-btn {
+    margin-top: 14px;
+}
+
+@media (max-width: 980px) {
+    .announcement-card.announcement-user-mode {
+        height: 84vh !important;
+        max-height: 84vh !important;
+        overflow-y: auto !important;
+    }
+    .announcement-card.announcement-user-mode .announcement-grid {
+        grid-template-columns: 1fr !important;
+        height: auto;
+    }
+    .announcement-card.announcement-user-mode .announcement-list-section,
+    .announcement-card.announcement-user-mode .announcement-detail-section {
+        height: auto;
+    }
+    .announcement-card.announcement-user-mode .announcement-list {
+        height: auto;
+        max-height: 240px !important;
+    }
+    .announcement-card.announcement-user-mode .announcement-detail-body {
+        max-height: 360px !important;
+    }
+}
+
+
+/* Slightly lower ordinary-user announcement list cards */
+.announcement-card.announcement-user-mode .announcement-list {
+    margin-top: 10px;
+    height: calc(100% - 46px);
+}
+
+
+/* Add inner top breathing room before the first ordinary-user announcement item */
+.announcement-card.announcement-user-mode .announcement-list {
+    padding-top: 12px;
+    box-sizing: border-box;
+}
+
+
+
+.admin-ban-tools { display:flex; align-items:center; gap:8px; flex-wrap:wrap; justify-content:flex-end; }
+.admin-ban-active-label { color:#bbb; font-size:12px; display:flex; align-items:center; gap:4px; }
+.admin-ban-list { display:flex; flex-direction:column; gap:8px; max-height:260px; overflow:auto; padding-right:2px; }
+.admin-ban-row { padding:10px 12px; border-radius:10px; background:rgba(0,0,0,0.28); border:1px solid rgba(255,255,255,0.07); }
+.admin-ban-row.active { border-color:rgba(255,90,90,0.35); }
+.admin-ban-row.revoked { opacity:.76; }
+.admin-ban-title { color:#fff; font-weight:700; font-size:13px; word-break:break-word; }
+.admin-ban-summary { color:#d7e7ff; font-size:12px; line-height:1.55; margin-top:4px; word-break:break-word; }
+.admin-ban-meta, .admin-ban-reason, .admin-ban-revoke { color:#aaa; font-size:12px; line-height:1.55; margin-top:4px; word-break:break-word; }
+.admin-ban-revoke { color:#8ed6a3; }

@@ -6,7 +6,7 @@ Table names and columns match the project specification exactly.
 """
 
 from sqlalchemy import (
-    Column, Integer, BigInteger, String, Unicode, Boolean,
+    Column, Integer, BigInteger, String, Unicode, Boolean, Float,
     DateTime, Text, ForeignKey, UniqueConstraint,
 )
 from sqlalchemy.orm import declarative_base, relationship
@@ -31,7 +31,22 @@ class User(Base):
     Province     = Column(Unicode(100), nullable=True)
     City         = Column(Unicode(100), nullable=True)
     District     = Column(Unicode(100), nullable=True)
+    CountryAdcode  = Column(Unicode(20), nullable=True)
+    ProvinceAdcode = Column(Unicode(20), nullable=True)
+    CityAdcode     = Column(Unicode(20), nullable=True)
+    DistrictAdcode = Column(Unicode(20), nullable=True)
+    LocationAdcode = Column(Unicode(20), nullable=True)
+    LocationName   = Column(Unicode(100), nullable=True)
+    LocationLevel  = Column(Unicode(20), nullable=True)
+    LocationCenter = Column(Unicode(50), nullable=True)
+    LocationSource = Column(Unicode(20), nullable=True)
+    LocationCountryCode = Column(Unicode(10), nullable=True)
+    LocationGeonameID = Column(Unicode(30), nullable=True)
+    LocationLatitude = Column(Float, nullable=True)
+    LocationLongitude = Column(Float, nullable=True)
+    LocationTimezone = Column(Unicode(100), nullable=True)
     LastSongID   = Column(Integer, nullable=True)
+    VisualizerEnabled = Column(Boolean, nullable=False, default=True)
 
 
 # ═══════════════════════════════════════════════════════════════════
@@ -162,3 +177,46 @@ class SongLyric(Base):
     SongID     = Column(Integer, ForeignKey('Songs.SongID', ondelete='CASCADE'),
                         primary_key=True)
     LyricsText = Column(Text, nullable=True)
+
+
+# ???????????????????????????????????????????????????????????????????
+# Support tickets ? user feedback and admin responses
+# ???????????????????????????????????????????????????????????????????
+
+class SupportTicket(Base):
+    __tablename__ = 'SupportTickets'
+
+    TicketID  = Column(Integer, primary_key=True, autoincrement=True)
+    UserID    = Column(Integer, ForeignKey('Users.UserID', ondelete='CASCADE'), nullable=False)
+    Title     = Column(Unicode(200), nullable=False)
+    Status    = Column(Unicode(30), nullable=False, default='pending')
+    CreatedAt = Column(DateTime, nullable=False)
+    UpdatedAt = Column(DateTime, nullable=False)
+    ClosedAt  = Column(DateTime, nullable=True)
+
+
+class SupportTicketMessage(Base):
+    __tablename__ = 'SupportTicketMessages'
+
+    MessageID  = Column(Integer, primary_key=True, autoincrement=True)
+    TicketID   = Column(Integer, ForeignKey('SupportTickets.TicketID', ondelete='CASCADE'), nullable=False)
+    UserID     = Column(Integer, ForeignKey('Users.UserID', ondelete='CASCADE'), nullable=False)
+    AuthorRole = Column(Unicode(20), nullable=False)
+    Body       = Column(Text, nullable=True)
+    BodyFormat = Column(Unicode(20), nullable=False, default='markdown')
+    Result     = Column(Unicode(30), nullable=True)
+    CreatedAt  = Column(DateTime, nullable=False)
+
+
+class SupportTicketAttachment(Base):
+    __tablename__ = 'SupportTicketAttachments'
+
+    AttachmentID = Column(Integer, primary_key=True, autoincrement=True)
+    TicketID     = Column(Integer, ForeignKey('SupportTickets.TicketID', ondelete='CASCADE'), nullable=False)
+    MessageID    = Column(Integer, ForeignKey('SupportTicketMessages.MessageID', ondelete='CASCADE'), nullable=False)
+    UserID       = Column(Integer, ForeignKey('Users.UserID', ondelete='CASCADE'), nullable=False)
+    OriginalName = Column(Unicode(255), nullable=False)
+    StoredName   = Column(Unicode(255), nullable=False)
+    ContentType  = Column(Unicode(200), nullable=True)
+    FileSize     = Column(BigInteger, nullable=False)
+    CreatedAt    = Column(DateTime, nullable=False)

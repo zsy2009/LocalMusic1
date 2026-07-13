@@ -6,7 +6,7 @@
     <title>MusicCloud</title>
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#1ed760">
-    <link rel="stylesheet" href="style.css?v=20260708-i18n3">
+    <link rel="stylesheet" href="style.css?v=20260712-i18n-lyrics-notice1">
 </head>
 <body>
 
@@ -47,7 +47,7 @@
                         <span id="change-loc-btn" style="cursor: pointer; opacity: 0.8; font-size: 11px; background: rgba(255,255,255,0.15); padding: 2px 6px; border-radius: 4px; transition: background 0.2s;" title="自定义天气地区">切换</span>
                     </div>
                     <div id="ip-info-box" style="font-size: 11px; color: #aaa; text-align: center; margin-top: 8px;">
-                        <span id="ip-text">IP: 探测中...</span> | 估算: <span id="ip-loc-text">探测中...</span>
+                        <span id="ip-text">IP: 探测中...</span> | <span id="ip-estimated-label">估算</span>: <span id="ip-loc-text">探测中...</span>
                     </div>
                 </div>
                 <button id="view-stats-btn" class="btn-primary" style="width: 100%; margin-top: 15px;">📊 听歌统计</button>
@@ -57,6 +57,8 @@
                 <input type="text" id="search-input" placeholder="🔍 搜索歌曲名称或歌手...">
             </div>
             <button id="profile-btn" class="bar-btn" title="个人中心">⚙️</button>
+            <button id="ticket-panel-btn" class="bar-btn" title="&#24037;&#21333; / &#32852;&#31995;&#24320;&#21457;&#32773;">&#127915;</button>
+            <button id="announcement-panel-btn" class="bar-btn" title="&#20844;&#21578;">&#128226;</button>
             <button id="admin-panel-btn" class="bar-btn" title="后台管理" style="display:none;">🛡️</button>
             <label id="lang-select-wrap" class="lang-select-wrap" title="Language">
                 <span id="lang-select-label">&#127760;</span>
@@ -133,6 +135,8 @@
                     <button id="mobile-view-stats-btn" class="btn-primary" style="width:80%;">📊 听歌统计</button>
                     <button id="mobile-profile-btn" class="btn-primary" style="width:80%;background:#333;color:#fff;">⚙️ 个人中心</button>
                     <button id="mobile-nav-favorites" class="btn-primary" style="width:80%;background:#333;color:#fff;">❤️ 我喜欢的音乐</button>
+                    <button id="mobile-ticket-btn" class="btn-primary" style="width:80%;background:#333;color:#fff;">&#127915; &#24037;&#21333; / &#32852;&#31995;&#24320;&#21457;&#32773;</button>
+                    <button id="mobile-announcement-btn" class="btn-primary" style="width:80%;background:#333;color:#fff;">&#128226; &#20844;&#21578;</button>
                 </div>
             </div>
         </div>
@@ -144,6 +148,7 @@
                 <select id="sel-quality-desktop" class="quality-selector hide-on-mobile" title="音质选择">
                     <option value="original">原声流</option>
                 </select>
+                <button id="visualizer-toggle-btn" class="visualizer-toggle-btn is-on" type="button" aria-pressed="true" title="&#33410;&#24459;&#26465;&#65306;&#24320;">&#9637;</button>
                 <button id="btn-mode" title="当前: 列表循环">🔁</button>
                 <button id="player-fav-btn" class="favorite-btn" title="喜欢">♡</button>
                 <button id="btn-prev" title="上一曲">⏮</button>
@@ -191,22 +196,177 @@
 
     <!-- ── Admin Modal ──────────────────────────────────────── -->
     <div id="admin-modal" class="modal">
-        <div class="modal-card">
-            <h2>🛡️ 后台管理 — 创建用户</h2>
-            <input type="text" id="admin-username" placeholder="用户名">
-            <input type="password" id="admin-password" placeholder="密码">
-            <input type="text" id="admin-nickname" placeholder="昵称">
-            <select id="admin-role">
-                <option value="User">User</option>
-                <option value="Admin">Admin</option>
-            </select>
-            <button id="admin-create-btn" class="btn-primary btn-sm">创建用户</button>
-            <p id="admin-msg" class="msg-text"></p>
+        <div class="modal-card admin-card">
+            <h2>&#128737;&#65039; 锦衣卫管理</h2>
 
+            <section class="admin-section">
+                <h3 id="admin-create-title">创建用户</h3>
+                <input type="text" id="admin-username" placeholder="用户名">
+                <input type="password" id="admin-password" placeholder="密码">
+                <input type="text" id="admin-nickname" placeholder="昵称">
+                <select id="admin-role">
+                    <option value="User">User</option>
+                    <option value="Admin">Admin</option>
+                </select>
+                <button id="admin-create-btn" class="btn-primary btn-sm">创建用户</button>
+            </section>
+
+            <section class="admin-section">
+                <div class="admin-section-header">
+                    <h3 id="admin-user-list-title">用户列表</h3>
+                    <button id="admin-refresh-btn" class="btn-secondary btn-sm">刷新</button>
+                </div>
+                <p id="admin-password-note" class="admin-note">&#23494;&#30721;&#24050;&#21152;&#23494;&#23384;&#20648;&#65292;&#19981;&#33021;&#26597;&#30475;&#26126;&#25991;&#65307;&#36825;&#37324;&#21482;&#20801;&#35768;&#37325;&#32622;&#26222;&#36890;&#29992;&#25143;&#23494;&#30721;&#65292;&#31649;&#29702;&#21592;&#23494;&#30721;&#19981;&#21487;&#26356;&#25913;&#12290;&#21024;&#38500;&#29992;&#25143;&#20165; admin &#36134;&#21495;&#21487;&#29992;&#12290;</p>
+                <div id="admin-user-list" class="admin-user-list"></div>
+            </section>
+
+            <section class="admin-section admin-ban-section">
+                <div class="admin-section-header">
+                    <h3 id="admin-ban-title">BAN管理</h3>
+                    <div class="admin-ban-tools">
+                        <label class="admin-ban-active-label"><input type="checkbox" id="admin-ban-active-only"> 只看生效中</label>
+                        <button id="admin-ban-refresh-btn" class="btn-secondary btn-sm">刷新BAN记录</button>
+                    </div>
+                </div>
+                <p class="admin-note">这里显示封禁人、封禁时间、封禁原因、解封人、解封时间和解封原因。手动BAN留空时长表示永久BAN。</p>
+                <div id="admin-ban-list" class="admin-ban-list"></div>
+            </section>
+
+            <p id="admin-msg" class="msg-text"></p>
             <button id="admin-close-btn" class="btn-secondary">关闭</button>
         </div>
     </div>
 
+
+
+    <!-- Announcement Modal -->
+    <div id="announcement-modal" class="modal">
+        <div class="modal-card ticket-card announcement-card">
+            <div class="ticket-modal-header">
+                <div class="ticket-title-block">
+                    <h2 id="announcement-modal-title">&#128226; &#20844;&#21578;</h2>
+                    <p>&#31649;&#29702;&#21592;&#21487;&#20197;&#21521;&#20840;&#20307;&#25104;&#21592;&#25110;&#25351;&#23450;&#25104;&#21592;&#21457;&#24067;&#20844;&#21578;&#65292;&#25903;&#25345; Markdown &#21644;&#38468;&#20214;&#12290;</p>
+                </div>
+                <div class="ticket-header-actions">
+                    <button id="announcement-refresh-btn" class="btn-secondary btn-sm">&#21047;&#26032;</button>
+                    <button id="announcement-header-close-btn" class="ticket-icon-btn" title="&#20851;&#38381;">&times;</button>
+                </div>
+            </div>
+
+            <div class="ticket-grid announcement-grid">
+                <section id="announcement-create-section" class="ticket-section announcement-create-section" hidden aria-hidden="true" style="display:none;">
+                    <h3><span>&#9997;&#65039;</span>&#21457;&#24067;&#20844;&#21578;</h3>
+                    <input type="text" id="announcement-title-input" placeholder="&#20844;&#21578;&#26631;&#39064;">
+                    <select id="announcement-target-select" aria-label="&#20844;&#21578;&#21457;&#36865;&#23545;&#35937;">
+                        <option value="">&#20840;&#20307;&#25104;&#21592;</option>
+                    </select>
+                    <label class="announcement-checkbox-row">
+                        <input type="checkbox" id="announcement-pinned-input">
+                        <span>&#21457;&#24067;&#21518;&#32622;&#39030;</span>
+                    </label>
+                    <textarea id="announcement-body-input" rows="7" placeholder="&#20844;&#21578;&#27491;&#25991;&#65292;&#25903;&#25345; Markdown&#12290;"></textarea>
+                    <input type="file" id="announcement-files-input" accept="image/jpeg,image/png,image/webp,image/gif,audio/*,video/*,.pdf,.txt,.md,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.csv,.json,.zip,.rar,.7z" multiple>
+                    <div id="announcement-files-list" class="ticket-selected-files empty" aria-live="polite"></div>
+                    <p class="field-hint">&#20844;&#21578;&#38468;&#20214;&#65306;&#21333;&#20010;&#26368;&#22823; 100MB&#65292;&#26368;&#22810; 10 &#20010;&#65307;&#31105;&#27490;&#19978;&#20256;&#21487;&#25191;&#34892;&#33050;&#26412;&#12289;HTML&#12289;SVG &#31561;&#39640;&#39118;&#38505;&#25991;&#20214;&#12290;</p>
+                    <div class="ticket-form-actions">
+                        <span class="ticket-shortcut-hint">Ctrl + Enter &#21457;&#24067;</span>
+                        <button id="announcement-submit-btn" class="btn-primary btn-sm">&#21457;&#24067;&#20844;&#21578;</button>
+                    </div>
+                    <p id="announcement-create-msg" class="msg-text"></p>
+                </section>
+
+                <section class="ticket-section ticket-list-section announcement-list-section">
+                    <h3><span>&#128204;</span>&#20844;&#21578;&#21015;&#34920;</h3>
+                    <div id="announcement-list" class="ticket-list announcement-list"></div>
+                </section>
+
+                <section class="ticket-section ticket-detail-section announcement-detail-section">
+                    <div id="announcement-detail-empty" class="ticket-empty">&#35831;&#36873;&#25321;&#19968;&#26465;&#20844;&#21578;&#26597;&#30475;&#35814;&#24773;&#12290;</div>
+                    <div id="announcement-detail" style="display:none;">
+                        <div class="ticket-detail-head announcement-detail-head">
+                            <h3 id="announcement-detail-title"></h3>
+                            <div class="announcement-admin-actions">
+                                <button id="announcement-pin-btn" class="btn-secondary btn-sm" style="display:none;">&#32622;&#39030;</button>
+                                <button id="announcement-delete-btn" class="btn-secondary btn-sm danger-btn" style="display:none;">&#21024;&#38500;</button>
+                            </div>
+                        </div>
+                        <div id="announcement-detail-meta" class="ticket-meta"></div>
+                        <div id="announcement-detail-body" class="announcement-detail-body"></div>
+                        <div id="announcement-detail-files" class="announcement-detail-files"></div>
+                    </div>
+                </section>
+            </div>
+            <button id="announcement-close-btn" class="btn-secondary">&#20851;&#38381;</button>
+        </div>
+    </div>
+
+    <!-- Support Ticket Modal -->
+    <div id="ticket-modal" class="modal">
+        <div class="modal-card ticket-card">
+            <div class="ticket-modal-header">
+                <div class="ticket-title-block">
+                    <h2 id="ticket-modal-title">&#127915; &#24037;&#21333; / &#32852;&#31995;&#24320;&#21457;&#32773;</h2>
+                    <p>&#21453;&#39304;&#38382;&#39064;&#12289;Bug &#25110;&#34917;&#20805;&#35828;&#26126;&#65292;&#25903;&#25345; Markdown &#21644;&#23186;&#20307;&#38468;&#20214;&#12290;</p>
+                </div>
+                <div class="ticket-header-actions">
+                    <button id="ticket-refresh-btn" class="btn-secondary btn-sm">&#21047;&#26032;</button>
+                    <button id="ticket-header-close-btn" class="ticket-icon-btn" title="&#20851;&#38381;">&times;</button>
+                </div>
+            </div>
+
+            <div class="ticket-grid">
+                <section id="ticket-create-section" class="ticket-section">
+                    <h3><span>&#9997;&#65039;</span>&#25552;&#20132;&#26032;&#24037;&#21333;</h3>
+                    <input type="text" id="ticket-title-input" placeholder="&#35831;&#31616;&#35201;&#25551;&#36848;&#38382;&#39064;&#65292;&#20363;&#22914;&#65306;&#27468;&#35789;&#26080;&#27861;&#26174;&#31034;">
+                    <textarea id="ticket-body-input" rows="7" placeholder="&#35831;&#22635;&#20889;&#38382;&#39064;&#35814;&#24773;&#65292;&#25903;&#25345; Markdown&#12290;"></textarea>
+                    <input type="file" id="ticket-files-input" accept="image/jpeg,image/png,image/webp,image/gif,audio/*,video/*" multiple>
+                    <div id="ticket-files-list" class="ticket-selected-files empty" aria-live="polite"></div>
+                    <p class="field-hint">&#26222;&#36890;&#29992;&#25143;&#65306;&#21333;&#20010;&#38468;&#20214;&#26368;&#22823; 100MB&#65292;&#26368;&#22810; 9 &#20010;&#38468;&#20214;&#65307;&#21487;&#22810;&#27425;&#28857;&#20987;&#36873;&#25321;&#25991;&#20214;&#32047;&#21152;&#12290;</p>
+                    <div class="ticket-form-actions">
+                        <span class="ticket-shortcut-hint">Ctrl + Enter &#25552;&#20132;</span>
+                        <button id="ticket-submit-btn" class="btn-primary btn-sm">&#25552;&#20132;&#24037;&#21333;</button>
+                    </div>
+                    <p id="ticket-create-msg" class="msg-text"></p>
+                </section>
+
+                <section class="ticket-section ticket-list-section">
+                    <h3 id="ticket-list-title"><span>&#128194;</span>&#25105;&#30340;&#24037;&#21333;</h3>
+                    <div id="ticket-list" class="ticket-list"></div>
+                </section>
+
+                <section class="ticket-section ticket-detail-section">
+                    <div id="ticket-detail-empty" class="ticket-empty">&#35831;&#36873;&#25321;&#19968;&#20010;&#24037;&#21333;&#26597;&#30475;&#35814;&#24773;&#12290;</div>
+                    <div id="ticket-detail" style="display:none;">
+                        <div class="ticket-detail-head">
+                            <h3 id="ticket-detail-title"></h3>
+                            <span id="ticket-detail-status" class="ticket-status"></span>
+                        </div>
+                        <div id="ticket-detail-meta" class="ticket-meta"></div>
+                        <div id="ticket-messages" class="ticket-messages"></div>
+                        <div id="ticket-reply-box" class="ticket-reply-box">
+                            <textarea id="ticket-reply-body" rows="5" placeholder="&#32487;&#32493;&#34917;&#20805;&#35828;&#26126;&#25110;&#22238;&#22797;&#65292;&#25903;&#25345; Markdown&#12290;"></textarea>
+                            <input type="file" id="ticket-reply-files" accept="image/jpeg,image/png,image/webp,image/gif,audio/*,video/*" multiple>
+                            <div id="ticket-reply-files-list" class="ticket-selected-files empty" aria-live="polite"></div>
+                            <div id="ticket-admin-result-row" class="ticket-admin-result-row" style="display:none;">
+                                <label for="ticket-admin-result">&#22788;&#29702;&#32467;&#26524;</label>
+                                <select id="ticket-admin-result">
+                                    <option value="following">&#26242;&#26080;&#27861;&#22788;&#29702;&#65292;&#36319;&#36827;&#20013;</option>
+                                    <option value="processed">&#24050;&#22788;&#29702;</option>
+                                    <option value="rejected">&#24050;&#25298;&#32477;</option>
+                                </select>
+                            </div>
+                            <div class="ticket-form-actions">
+                                <span class="ticket-shortcut-hint">Ctrl + Enter &#21457;&#36865;</span>
+                                <button id="ticket-reply-submit-btn" class="btn-primary btn-sm">&#21457;&#36865;&#22238;&#22797;</button>
+                            </div>
+                            <p id="ticket-reply-msg" class="msg-text"></p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <button id="ticket-close-btn" class="btn-secondary">&#20851;&#38381;</button>
+        </div>
+    </div>
     <!-- ── Playlist Create Modal ─────────────────────────────── -->
     <div id="playlist-create-modal" class="modal">
         <div class="modal-card">
@@ -226,8 +386,32 @@
             <button id="playlist-select-close" class="btn-secondary">取消</button>
         </div>
     </div>
-
     <!-- ── Stats Modal ──────────────────────────────────────── -->
+
+    <!-- ── Custom cover / lyrics modal ─────────────────────────── -->
+    <div id="custom-asset-modal" class="modal">
+        <div class="modal-card custom-asset-card">
+            <h2>🎨 自定义封面和歌词</h2>
+            <p id="custom-asset-song-title" class="custom-asset-song-title"></p>
+            <label id="custom-cover-label">自定义封面</label>
+            <input type="file" id="custom-cover-upload" accept="image/jpeg,image/png,image/webp,image/gif">
+            <p id="custom-cover-hint" class="field-hint">支持 JPG、PNG、WebP、GIF；保存后优先展示自定义封面。</p>
+            <div class="modal-row custom-asset-actions">
+                <button id="custom-cover-save-btn" class="btn-primary btn-sm">保存封面</button>
+                <button id="custom-cover-clear-btn" class="btn-secondary btn-sm">清除封面</button>
+            </div>
+            <label id="custom-lyrics-label">自定义歌词</label>
+            <textarea id="custom-lyrics-text" rows="10" placeholder="[00:01.00]第一行歌词"></textarea>
+            <p id="custom-lyrics-hint" class="field-hint">填写 LRC 时间轴文本；留空或清除后回退默认歌词。</p>
+            <div class="modal-row custom-asset-actions">
+                <button id="custom-lyrics-save-btn" class="btn-primary btn-sm">保存歌词</button>
+                <button id="custom-lyrics-clear-btn" class="btn-secondary btn-sm">清除歌词</button>
+            </div>
+            <p id="custom-asset-msg" class="msg-text"></p>
+            <button id="custom-asset-close-btn" class="btn-secondary">关闭</button>
+        </div>
+    </div>
+
     <div id="stats-modal" class="modal">
         <div class="modal-card" style="text-align: center; max-width: 400px;">
             <h2 style="margin-bottom: 20px; color: #1ed760;">🎵 你的听歌报告</h2>
@@ -253,6 +437,6 @@
         </div>
     </div>
 
-    <script src="app.js?v=20260708-i18n3"></script>
+    <script src="app.js?v=20260712-i18n-lyrics-notice1"></script>
 </body>
 </html>
